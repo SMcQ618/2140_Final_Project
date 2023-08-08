@@ -5,21 +5,15 @@ from fractions import Fraction
 #this will hold all the basic opperations that will be used in teh calclulator
 
 class Operations():
+    """This class will contain the basic operations that a calculator contains.
+      THe more advance will be in their own class.
+    """
     def __init__(self, mode = "radians"):
         self.mode = mode.lower()
         #sotres the mode as a lowercase
-    
-    '''def set_mode(self, mode):
-        self.mode = mode.lower()
 
     def select_mode(self):
-        while True:
-            mode = input("Select mode (radians or degrees): ").lower()
-            if mode in ["radians", "degrees"]:
-                return mode
-            else:
-                print("invalid mode. Please choose again")'''
-    def select_mode(self):
+        #have the user be able to select whether radians or degree
         while True:
             mode = input("Select mode (radians or degrees): ").lower()
             if mode in ["radians", "degrees"]:
@@ -32,11 +26,6 @@ class Operations():
             return math.radians(angle)
         return angle
 
-    def _convert_angle(self, angle):
-        if self.mode == "degrees":
-            return math.radians(angle)
-        return angle
-    
     def add(self, x, y):
         return x + y
     
