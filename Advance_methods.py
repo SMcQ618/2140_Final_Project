@@ -1,6 +1,9 @@
 import math
 import numpy
-#having trouble with scipy
+import scipy
+
+#having trouble with scipy..nevermind
+
 
 class Adv_Methods:
     """Will contain the more complex and advance opperations for calculator. 
