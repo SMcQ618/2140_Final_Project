@@ -1,11 +1,13 @@
 import sympy
 class Matrix:
     """This is the matrix class for all the linear algebra"""
-    def __init__(self, rows, cols):
+    def __init__(self, rows, cols, matrix1, matrix2):
         #want the user to be able to specify the number of rows and colums
-        self.rows = int(input('Enter the number of rows: '))
-        self.cols = int(input('Enter the number of columns: '))
-        self.matrix =[[0 for i in range(self.cols)] for j in range(self.rows)]
+        self.rows = rows
+        self.cols = cols
+        self.matrix1 = matrix1
+        self.matrix2 = matrix2
+        self.matrix =[[0 for _ in range(cols)] for _ in range(rows)]
 
     def input_matrix(self):
         """Have the user be able to input values for the matrix
@@ -15,6 +17,7 @@ class Matrix:
             self.matrix[i] = list(map(float, row_input.split()))
 
     def display_matrx(self):
+        """The display function of the matrix"""
         for row in self.matrix:
             print(' '.join(map(str, row)))
 
@@ -29,6 +32,20 @@ class Matrix:
                 result.matrix[i][j] = self.matrix[i][j] + other_matrix.matrix[i][j]
         return result
     
+    def matrix_multiply(self):
+        if len(self.matrix1[0]) != len(self.matrix2):
+            raise ValueError('Matrix dimensions do not match')
+        
+        result = []
+        for i in range(len(self.matrix1)):
+            row = []
+            for j in range(len(self.matrix2[0])):
+                value = sum(self.matrix1[i][k] * self.matrix2[k][j] for k in range(len(self.matrix2)))
+                row.append(value)
+            result.append(row)
+        
+        return result
+
     def transpose(self):
         """Be able to take a row and column and switch them"""
         result = Matrix(self.cols, self.rows)
@@ -38,12 +55,31 @@ class Matrix:
         return result
 
     def swap_rows(self, row1, row2):
-            self.matrix[row1], self.matrix[row2] = self.matrix[row2], self.matrix[row1]
+        """Swaps two rows in the matrix
+
+        Args:
+            row1 (int): Index of the first row to be swapped
+            row2 (int): INdex of the second row
+        """
+        self.matrix[row1], self.matrix[row2] = self.matrix[row2], self.matrix[row1]
 
     def scale_row(self, row, scalar):
+        """Scales a row in the matrix by a scalar value
+
+        Args:
+            row (int): Index of teh row
+            scalar (float): The scalar value which to scale the row
+        """
         self.matrix[row] = [element * scalar for element in self.matrix[row]]
 
     def add_scaled_row(self, source_row, target_row, scalar):
+        """Adds a scaled row to another row in the matrix.
+
+        Args:
+            source_row (int): Index of the row to be scaled and added.
+            target_row (int): Index of the row to which the scaled row will be added.
+            scalar (float): The scalar value by which to scale the source row before adding.
+        """
         for i in range(self.cols):
             self.matrix[target_row][i] += scalar * self.matrix[source_row][i]
      
@@ -75,7 +111,6 @@ class Matrix:
             ref_matrix.swap_rows(i, r)
             lv = ref_matrix.matrix[i][lead] 
             #lv is the value of the leading coefficient, the nonzero entry in the leading column
-
             ref_matrix.add_scaled_row(r, 1.0 / lv)
             
             for i in range(ref_matrix.rows):
@@ -106,3 +141,4 @@ class Matrix:
                 for i in range(r):
                     rref_matrix.add_scaled_row(r, i, -rref_matrix.matrix[i][lead])
         return rref_matrix
+    
