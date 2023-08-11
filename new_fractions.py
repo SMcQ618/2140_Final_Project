@@ -1,38 +1,41 @@
 class NewFractions:
-    """This is a class that represents a fration between two integers"""
-    def __init__(self, numerator, denominator) -> None:
+    def __init__(self, numerator, denominator):
         self.numerator = numerator
-        if denominator == 0:
-            raise ZeroDivisionError('Denominator cannot be 0')
         self.denominator = denominator
         self._simplify()
 
     def _simplify(self):
-        common_divisor = self._find_common_divi(self.numerator, self.denominator)
+        """Simplifies the fraction by dividing both numerator and denominator by their common divisor."""
+        common_divisor = self._find_common_divisor(self.numerator, self.denominator)
         self.numerator //= common_divisor
         self.denominator //= common_divisor
 
-    def _find_common_divi(self,a,b):
+    def _find_common_divisor(self, a, b):
+        """Finds the greatest common divisor of two numbers using the Euclidean algorithm."""
         while b != 0:
-            a,b = b, a % b
+            a, b = b, a % b
         return a   
 
     def _find_lcm(self, a, b):
-        return abs(a * b) // self._find_common_divi(a,b)
-    
+        """Finds the least common multiple of two numbers."""
+        return abs(a * b) // self._find_common_divisor(a, b)
+
     def __add__(self, other):
-        return NewFractions(self.numerator* other.denominator + other.numerator * self.denominator, self.denominator * other.denominator)
-        
+        """Adds two fractions."""
+        return NewFractions(self.numerator * other.denominator + other.numerator * self.denominator, self.denominator * other.denominator)
+
     def __sub__(self, other):
-        return NewFractions(self.numerator* other.denominator - other.numerator * self.denominator, self.denominator * other.denominator)
-        
+        """Subtracts another fraction from this fraction."""
+        return NewFractions(self.numerator * other.denominator - other.numerator * self.denominator, self.denominator * other.denominator)
+
     def __mul__(self, other):
-        #numerator = self.numerator * other.numerator
-        #denominator = self.denominator * other.denominator
-        return NewFractions(self.numerator * other.denominator, self.denominator * other.numerator)
-    
+        """Multiplies two fractions."""
+        return NewFractions(self.numerator * other.numerator, self.denominator * other.denominator)
+
     def _equa(self, other) -> bool:
+        """Checks if two fractions are equal."""
         return self.numerator * other.denominator == self.denominator * other.numerator
-    
+
     def __str__(self) -> str:
+        """Returns the string representation of the fraction."""
         return f"{self.numerator}/{self.denominator}"
