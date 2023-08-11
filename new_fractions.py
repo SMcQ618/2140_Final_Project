@@ -1,4 +1,5 @@
 class NewFractions:
+    #this is the fraction class
     def __init__(self, numerator, denominator):
         self.numerator = numerator
         self.denominator = denominator
@@ -18,6 +19,7 @@ class NewFractions:
 
     def _find_lcm(self, a, b):
         """Finds the least common multiple of two numbers."""
+        #has to be a multiple so find product that works
         return abs(a * b) // self._find_common_divisor(a, b)
 
     def __add__(self, other):
