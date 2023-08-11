@@ -10,7 +10,7 @@ class Linear_Eqs:
         self.constant = constant
     
     def solve_linear_equations(self):
-        """Solves a linear equation of the form ax + b = 0.
+        """Solves a linear equation and should return real solutions or none.
         Args:
             a (float): Coefficient of x.
             b (float): Constant term.
@@ -19,13 +19,16 @@ class Linear_Eqs:
             "No solutions" if the equation has no solution, and the solution (a float)
             if a unique solution exists.
         """
-        if self.a == 0:
-            if self.b == 0:
-                return "Infinite solutions"
-            return "No solutions"
-        return -self.b / self.a
+        x = sp.symbol('x')
+        polynomial = sum(coeff * x ** exp for exp, coeff in enimerate(self.coefficents[::-1]))
+        solutions = sp.solve(polynomial, x)
+
+        #filter out the complex solutions
+        real_solutions = [sol for sol in solutions if sol.is_real]
+        return real_solutions
+
     
-    def solve_for_variable(self):
+    '''def solve_for_variable(self):
         """Solves the linear equation for a variable
 
         Args:
@@ -38,14 +41,13 @@ class Linear_Eqs:
         if self.coefficents:
             return (self.constant * 1) / self.coefficents[0]
         else:
-            raise ValueError('Coefficient list is empty')
+            raise ValueError('Coefficient list is empty')'''
         
     def __str__(self):
-        """
-        Return a formatted string representation of the equation.
+        """Return a formatted string representation of the equation.
 
         Returns:
-            str: Formatted equation string.
+            str: String representaion of the equation.
         """
         equation_str = " + ".join([f"{coeff}x^{exp}" for exp, coeff in enumerate(self.coefficients[::-1]) if coeff != 0])
         equation_str += f" = {self.constant}"
@@ -84,4 +86,3 @@ class SystemOfEQs:
             solutions.append(solution)
        
         return solution
-#need a equation 
