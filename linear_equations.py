@@ -20,28 +20,12 @@ class Linear_Eqs:
             if a unique solution exists.
         """
         x = sp.symbol('x')
-        polynomial = sum(coeff * x ** exp for exp, coeff in enimerate(self.coefficents[::-1]))
+        polynomial = sum(coeff * x ** exp for exp, coeff in enumerate(self.coefficents[::-1]))
         solutions = sp.solve(polynomial, x)
 
         #filter out the complex solutions
         real_solutions = [sol for sol in solutions if sol.is_real]
         return real_solutions
-
-    
-    '''def solve_for_variable(self):
-        """Solves the linear equation for a variable
-
-        Args:
-            coeffients (int): is the coefficent for a variable
-        Returns:
-            float: The value of the variable x
-        Raises:
-            ValueError: If the coefficient list is empty
-        """
-        if self.coefficents:
-            return (self.constant * 1) / self.coefficents[0]
-        else:
-            raise ValueError('Coefficient list is empty')'''
         
     def __str__(self):
         """Return a formatted string representation of the equation.
