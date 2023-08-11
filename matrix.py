@@ -1,4 +1,5 @@
 import sympy
+import math
 class Matrix:
     """This is the matrix class for all the linear algebra"""
     def __init__(self, rows, cols, matrix1, matrix2):

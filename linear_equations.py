@@ -20,3 +20,4 @@ class Linear_Eqs:
                 return "Infinite solutions"
             return "No solutions"
         return -self.b / self.a
+    

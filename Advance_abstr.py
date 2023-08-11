@@ -1,4 +1,5 @@
 from abc import ABC, abstractclassmethod
+#needed to make an abstract class to make it easier
 
 class Calculations:
     @staticmethod

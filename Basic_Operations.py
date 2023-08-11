@@ -59,7 +59,8 @@ class Operations:
         Returns:
             int: Is the difference of two numbers
         """
-        return self.x - self.y
+        return self.x - self.y 
+        #should work even if the the output is a negative number
     
     def multiply(self)-> int:
         """Is going to be the multiplication method for the calculator
@@ -143,6 +144,7 @@ class Operations:
             int: Returns E raised to the power of n
         """
         return math.exp(n)
+    #uses the e exponential not like the power function
     
     def sin(self, angle)-> int:
         """Part of the trigonometry methods for the caluclator
