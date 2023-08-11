@@ -1,15 +1,19 @@
 #topics will inclide: slving a linear equation, matrix from the module i created, Systems of Equations and Matrices ch4, cofactors expansion, Eigenvalues and Eigenvectors,  
+import sympy as sp
+
 class Linear_Eqs:
-    def __init__(self, a, b) -> None:
+    """Class that represents a linear equation."""
+    def __init__(self, a, b,coefficients, constant) -> None:
         self.a = a
         self.b = b
+        self.coefficents = coefficients
+        self.constant = constant
+    
     def solve_linear_equations(self):
         """Solves a linear equation of the form ax + b = 0.
-
         Args:
             a (float): Coefficient of x.
             b (float): Constant term.
-
         Returns:
             str or float: Returns "Infinite solutions" if the equation has infinite solutions,
             "No solutions" if the equation has no solution, and the solution (a float)
@@ -21,3 +25,63 @@ class Linear_Eqs:
             return "No solutions"
         return -self.b / self.a
     
+    def solve_for_variable(self):
+        """Solves the linear equation for a variable
+
+        Args:
+            coeffients (int): is the coefficent for a variable
+        Returns:
+            float: The value of the variable x
+        Raises:
+            ValueError: If the coefficient list is empty
+        """
+        if self.coefficents:
+            return (self.constant * 1) / self.coefficents[0]
+        else:
+            raise ValueError('Coefficient list is empty')
+        
+    def __str__(self):
+        """
+        Return a formatted string representation of the equation.
+
+        Returns:
+            str: Formatted equation string.
+        """
+        equation_str = " + ".join([f"{coeff}x^{exp}" for exp, coeff in enumerate(self.coefficients[::-1]) if coeff != 0])
+        equation_str += f" = {self.constant}"
+        return equation_str
+    
+class SystemOfEQs:
+    """Class that represents a system of linear equartions"""
+    def __init__(self) -> None:
+        """Initializing an empty system of equations"""
+        self.equations = []
+        self.solutions = []
+
+    def add_equaiton(self, equation):
+        """Add an equation to teh system.
+
+        Args:
+            equation (Linear_Eq): The equation to be added
+        """
+        self.equations.append(equation)
+
+    def solve_eq(self):
+        """Solve the system
+
+        Raises:
+            ValueError: If theres no equation in teh system
+
+        Returns:
+            list: A list of solutions for each equation in the system
+        """
+        if not self.equations:
+            raise ValueError('No equation ni the system')
+        
+        solutions = []
+        for equation in self.equations:
+            solution = equation.solve_for_variable()
+            solutions.append(solution)
+       
+        return solution
+#need a equation 
