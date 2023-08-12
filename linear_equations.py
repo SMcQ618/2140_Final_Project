@@ -1,33 +1,34 @@
 #topics will inclide: slving a linear equation, matrix from the module i created, Systems of Equations and Matrices ch4, cofactors expansion, Eigenvalues and Eigenvectors,  
-import sympy as sp
-import scipy.linalg 
+import numpy as np
+import numpy.linalg
 
 #need to write a way tp 
 class Linear_Eqs:
     """Class that represents a linear equation."""
-    def __init__(self, a, b,coefficients, constant) -> None:
-        self.a = a
-        self.b = b
+    def __init__(self,coefficients, constant) -> None:
         self.coefficents = coefficients
         self.constant = constant
     
-    def solve_linear_equations(self):
-        """Solves a linear equation and should return real solutions or none.
-        Args:
-            a (float): Coefficient of x.
-            b (float): Constant term.
-        Returns:
-            str or float: Returns "Infinite solutions" if the equation has infinite solutions,
-            "No solutions" if the equation has no solution, and the solution (a float)
-            if a unique solution exists.
+    def solve_for_variable(self):
         """
-        x = sp.symbol('x')
-        polynomial = sum(coeff * x ** exp for exp, coeff in enumerate(self.coefficents[::-1]))
-        solutions = sp.solve(polynomial, x)
+        Solve for the linear equation for the variable.
 
-        #filter out the complex solutions
-        real_solutions = [sol for sol in solutions if sol.is_real]
-        return real_solutions
+        Args: 
+        a (float): Coefficient of x
+        b (float): Constant term
+
+        Returns:
+        float: the value of the variable x
+        Raises:
+        ValueError: if the coefficient list is empty
+        """
+        if self.coefficents:
+            a = np.array([self.coefficents])
+            b = np.array([self.constant])
+            solution = np.linalg.solve(a, b)
+            return solution
+        else:
+            raise ValueError('Coefficient list is empty')
         
     def __str__(self):
         """Return a formatted string representation of the equation.
@@ -44,7 +45,6 @@ class SystemOfEQs:
     def __init__(self) -> None:
         """Initializing an empty system of equations"""
         self.equations = []
-        self.solutions = []
 
     def add_equaiton(self, equation):
         """Add an equation to teh system.
@@ -66,9 +66,8 @@ class SystemOfEQs:
         if not self.equations:
             raise ValueError('No equation ni the system')
         
-        solutions = []
-        for equation in self.equations:
-            solution = equation.solve_for_variable()
-            solutions.append(solution)
-       
-        return solution
+        coefficient_matrix = np.array([equation.coefficients for equation in self.equations])
+        constant_matrix = np.array([equation.constant for equation in self.equations])
+        solutions = np.linalg.solve(coefficient_matrix, constant_matrix)
+
+        return solutions
