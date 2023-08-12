@@ -1,6 +1,8 @@
 #topics will inclide: slving a linear equation, matrix from the module i created, Systems of Equations and Matrices ch4, cofactors expansion, Eigenvalues and Eigenvectors,  
 import sympy as sp
+import scipy.linalg 
 
+#need to write a way tp 
 class Linear_Eqs:
     """Class that represents a linear equation."""
     def __init__(self, a, b,coefficients, constant) -> None:
