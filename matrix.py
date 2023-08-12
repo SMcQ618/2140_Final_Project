@@ -1,5 +1,5 @@
 import numpy as np
-import math
+
 #need to wrtie a method that uses
 class Matrix:
     """This is the matrix class for all the linear algebra"""
