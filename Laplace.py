@@ -2,7 +2,8 @@
 #will the user have to know the final answer or just give the final answer?
 import sympy
 from sympy.abc import f,g,k,n,s,t,y,x
-from sympy.integrals import laplace_transform, inverse_laplace_transform
+from sympy.integrals import laplace_transform 
+from sympy.integrals import inverse_laplace_transform
 from sympy import init_printing #this will show the fraction expression
 import sys #this doe the delta symbol
 
@@ -12,55 +13,63 @@ sys.getdefaultencoding()
 
 class Laplace_transforms:
     """Will convert a function f(t) and/or g(t) into a function in the Laplace domain"""
-    def __init__(self, f, g, k, n, s, t, x, y, expression) -> None:
-        self.f = f
-        self.g = g
-        self.k = k
-        self.n = n
-        self.s = s
-        self.t = t
-        self.x = x
-        self.y = y
-        self.function = {
-            'k' : ('k/s'),
-            't**n' : ('n!/s ** n + 1'), 
-            'exp(at)' : ('1 / (s - a)'),
-            't**n * exp(at)' : ('n!/ (s - a) ** n + 1'),
-            'cos(kt)' : ('s / s**2 + k**2'),
-            'sin(kt)' : ('k/s**2 + k**2'),
-            'exp(at) * cos(kt)' : ('s-a / (s-a)**2 + k**2'),
-            'exp(at) * sin(kt)' : ('k / (s-a)**2 + k**2'),
-            't * sin(kt)' : ('2ks/(s**2 + k**2)**2'),
-            't * cos(kt)' : ('s**2 - k**2 /(s**2 + k**2)**2'),
-            'u(t-a)' : ('(exp(-as))/s'),
-            '\u03B4(t-a)' : ('exp(-as)') #this is lowercase delta
-            }
-        '''self.inverse_tran = {
-            'k/s' : 'k',
-            'n!/s ** n + 1': ,
-            '1 / (s - a)' : ,
-
-        }'''
+    def __init__(self, expression) -> None:
         self.expression = expression
+        self.function = {
+            'k': 'k/s',
+            't**n': 'factorial(n) / s**(n + 1)',
+            'exp(at)': '1 / (s - a)',
+            't**n * exp(at)': 'factorial(n) / (s - a)**(n + 1)',
+            'cos(kt)': 's / (s**2 + k**2)',
+            'sin(kt)': 'k / (s**2 + k**2)',
+            'exp(at) * cos(kt)': '(s - a) / ((s - a)**2 + k**2)',
+            'exp(at) * sin(kt)': 'k / ((s - a)**2 + k**2)',
+            't * sin(kt)': '2*k*s / (s**2 + k**2)**2',
+            't * cos(kt)': '(s**2 - k**2) / (s**2 + k**2)**2',
+            'u(t-a)': 'exp(-a*s) / s',
+            '\u03B4(t-a)': 'exp(-a*s)'#this is lowercase delta
+            }
+        self.inverse_tran = {
+            'k/s': 'k',
+            'factorial(n) / s**(n + 1)': 't**n',
+            '1 / (s - a)': 'exp(at)',
+            's / (s**2 + b**2)': 'cos(b*t)',
+            'b / (s**2 + b**2)': 'sin(b*t)',
+            'k / (s**2 + k**2)': 'sin(kt)',
+            '(s - a) / ((s - a)**2 + k**2)': 'exp(at) * cos(kt)',
+            'k / ((s - a)**2 + k**2)': 'exp(at) * sin(kt)',
+            '2*k*s / (s**2 + k**2)**2': 't * sin(kt)',
+            '(s**2 - k**2) / (s**2 + k**2)**2': 't * cos(kt)',
+            'exp(-a*s) / s': 'u(t-a)',
+            'exp(-a*s)': '\u03B4(t-a)'}
     
-    def tranform(self):
-        s, t = sympy.symbol('s, t')
-        expression = self.expression
+    def l_tranform(self):
+        s, t = sympy.symbols('s t')
+        if isinstance(self.expression[f], str):
+            transformed_expression = sympy.sympify(self.expression)
 
-        for func, (transform, i) in self.tranform.items():
-            transformed_expression = expression.replace(func, transform)
+        for func, transform in self.function.items():
+            transformed_expression = transformed_expression.replace(func, sympy.sympify(transform))
 
         laplace_expr = sympy.laplace_transform(transformed_expression, t, s)
         return laplace_expr
-    
-    def inverse_transform(self):
-        inverse_expression = self.expression
 
-        for transform, inverse_func in self.inverse_transforms.items():
-            inverse_expression = inverse_expression.replace(transform, inverse_func)
+    def inverse_transform(self):
+        inverse_expression = sympy.sympify(self.expression)
+
+        for transform, inverse_func in self.inverse_tran.items():
+            inverse_expression = inverse_expression.replace(sympy.sympify(transform), sympy.sympify(inverse_func))
 
         return inverse_expression
-#U = laplace_transform(5, k, s)
+    
+U = laplace_transform(5, k, s)
 # 5 -> 5/s
-#print(U[0])
+print(U[0])
 
+expression = 't**2 + exp(-2*t)'
+lt = Laplace_transforms(expression)
+laplace_result = lt.l_tranform()
+inverse_laplace_result = lt.inverse_transform()
+
+print("Laplace Transform:", laplace_result)
+print("Inverse Laplace Transform:", inverse_laplace_result)
