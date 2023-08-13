@@ -47,7 +47,7 @@ class SystemOfEQs:
         self.equations = []
 
     def add_equaiton(self, equation):
-        """Add an equation to teh system.
+        """Add an equation to the system.
 
         Args:
             equation (Linear_Eq): The equation to be added
