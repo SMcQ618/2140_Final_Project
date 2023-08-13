@@ -1,10 +1,12 @@
 #will hold all the Laplace transforms and 1rst and 2nd order equations
 #will the user have to know the final answer or just give the final answer?
 import sympy
+import math
 from sympy.abc import f,g,k,n,s,t,y,x
 from sympy.integrals import laplace_transform 
 from sympy.integrals import inverse_laplace_transform
 from sympy import init_printing #this will show the fraction expression
+from sympy import factorial, exp, symbols
 import sys #this doe the delta symbol
 
 #to use Euler's 'e' i have to use exp() hopefully I dont get confused
@@ -45,13 +47,13 @@ class Laplace_transforms:
     
     def l_tranform(self):
         s, t = sympy.symbols('s t')
-        if isinstance(self.expression[f], str):
-            transformed_expression = sympy.sympify(self.expression)
+
+        transformed_expression = sympy.sympify(self.expression)
 
         for func, transform in self.function.items():
             transformed_expression = transformed_expression.replace(func, sympy.sympify(transform))
 
-        laplace_expr = sympy.laplace_transform(transformed_expression, t, s)
+        laplace_expr = laplace_transform(transformed_expression, t, s)
         return laplace_expr
 
     def inverse_transform(self):
@@ -59,13 +61,16 @@ class Laplace_transforms:
 
         for transform, inverse_func in self.inverse_tran.items():
             inverse_expression = inverse_expression.replace(sympy.sympify(transform), sympy.sympify(inverse_func))
+            #takes the transform and switches with the function
 
-        return inverse_expression
-    
+        return inverse_laplace_transform(inverse_expression, s, t)
+        #this should change s into t
 U = laplace_transform(5, k, s)
 # 5 -> 5/s
 print(U[0])
 
+V = laplace_transform(math.cos(3 * t), t, s)
+print(V)
 expression = 't**2 + exp(-2*t)'
 lt = Laplace_transforms(expression)
 laplace_result = lt.l_tranform()
