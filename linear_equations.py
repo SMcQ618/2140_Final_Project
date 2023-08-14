@@ -22,11 +22,11 @@ class Linear_Eqs:
         Raises:
         ValueError: if the coefficient list is empty
         """
-        if self.coefficents:
-            a = np.array([self.coefficents])
+        if self.coefficients:
+            a = np.array([self.coefficients])  # Create a 2D array from coefficients
             b = np.array([self.constant])
             solution = np.linalg.solve(a, b)
-            return solution
+            return solution[0]  # Extract the solution from the 1x1 array
         else:
             raise ValueError('Coefficient list is empty')
         

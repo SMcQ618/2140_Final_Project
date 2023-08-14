@@ -3,40 +3,51 @@ import numpy as np
 from linear_equations import Linear_Eqs, SystemOfEQs
 
 class Test_linear(unittest.TestCase):
+    def setUp(self) -> None:
+         self.eq = Linear_Eqs(coefficients=[2,3], constant=5)
 
     def test_solve_for_variable(self):
-            equation = Linear_Eqs([2], 8)
-            solution = equation.solve_for_variable()
-            expected = np.array([4])
-            np.testing.assert_allclose(solution, expected)
+            solution = self.eq.solve_for_variable()
+            #solution = equation.solve_for_variable()
+            #expected = np.array([4])
+            self.assertAlmostEqual(solution, 2)
 
     def test_empty_coefficients(self):
-        equation = Linear_Eqs([], 8)
+        empty_eq = Linear_Eqs(coefficients=[], constant= 5)
+        #equation = Linear_Eqs([], 8)
         with self.assertRaises(ValueError):
-            equation.solve_for_variable()
+            empty_eq.solve_for_variable()
 
     def test_string_representation(self):
-        equation = Linear_Eqs([2, -3, 1], 7)
-        result = str(equation)
-        expected = "1x^2 + -3x^1 + 2x^0 = 7"
-        self.assertEqual(result, expected)
+        eq_str = str(self.eq)
+        self.assertEqual(eq_str, "2x^1 + 3x^0 = 5")
+        #equation = Linear_Eqs([2, -3, 1], 7)
+        #result = str(equation)
+        #expected = "1x^2 + -3x^1 + 2x^0 = 7"
+        #self.assertEqual(result, expected)
 
 class TestSystemOfEQs(unittest.TestCase):
+   def setUp(self):
+        self.equation1 = Linear_Eqs(coefficients=[2, -1], constant=5)
+        self.equation2 = Linear_Eqs(coefficients=[3, 2], constant=8)
+        self.system = SystemOfEQs()
+        self.system.add_equation(self.equation1)
+        self.system.add_equation(self.equation2)
+        
+    def test_add_equation(self):
+        self.assertEqual(len(self.system.equations), 2)
+        self.assertEqual(self.system.equations[0], self.equation1)
+        self.assertEqual(self.system.equations[1], self.equation2)
 
     def test_solve_eq(self):
-        equation1 = Linear_Eqs([2, -1], 5)
-        equation2 = Linear_Eqs([1, 1], 3)
-        system = SystemOfEQs()
-        system.add_equation(equation1)
-        system.add_equation(equation2)
-        solutions = system.solve_eq()
-        expected = np.array([2, 1])
-        np.testing.assert_allclose(solutions, expected)
+        solutions = self.system.solve_eq()
+        self.assertAlmostEqual(solutions[0], 3.0)
+        self.assertAlmostEqual(solutions[1], 4.0)
 
-    def test_empty_system(self):
-        system = SystemOfEQs()
+    def test_solve_eq_no_equations(self):
+        empty_system = SystemOfEQs()
         with self.assertRaises(ValueError):
-            system.solve_eq()
+            empty_system.solve_eq()
 
 if __name__ == '__main__':
     unittest.main()        
