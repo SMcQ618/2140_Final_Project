@@ -54,7 +54,7 @@ class TestOperations(unittest.TestCase):
         
     def test_tan(self):
         result = self.operations.tan(30)
-        self.assertEqual(result, math.tan(math.degrees(30))) #0.5773502691896257)
+        self.assertEqual(result, math.tan(30))
 
     def test_absolute_value(self):
         result = self.operations.absolute_value(-5)
