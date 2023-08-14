@@ -180,11 +180,7 @@ class Operations:
             float: returns either the degree value or the radian value of some integer
         """
         angle = self._convert_angle()
-        sin_value = math.sin(angle)
-        cos_value = math.sin(angle)
-        if abs(cos_value) < 1e-15:
-            raise ValueError('Cannot calculate tangent')
-        return sin_value/sin_value 
+        return math.tan(angle) 
     
     def absolute_value(self, x) -> int:
         """Takes the absolue value of any integer
