@@ -155,7 +155,7 @@ class Operations:
         Returns:
             float: returns either the degree value or the radian value of some integer
         """
-        angle = self._convert_angle(angle)
+        angle = self._convert_angle()
         return math.sin(angle)
     
     def cos(self, angle)-> int:
@@ -167,7 +167,7 @@ class Operations:
         Returns:
             float: returns either the degree value or the radian value of some integer
         """
-        angle = self._convert_angle(angle)
+        angle = self._convert_angle()
         return math.cos(angle)
     
     def tan(self, angle)-> int:
@@ -179,8 +179,10 @@ class Operations:
         Returns:
             float: returns either the degree value or the radian value of some integer
         """
-        angle = self._convert_angle(angle)
-        return math.tan(angle)
+        angle = self._convert_angle()
+        sin_value = math.sin(angle)
+        cos_value = math.sin(angle)
+        return sin_value/cos_value
     
     def absolute_value(self, x) -> int:
         """Takes the absolue value of any integer
