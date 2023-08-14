@@ -9,13 +9,20 @@ class Laplace_transforms:
         self.t = sp.symbols('t', positive = True)
         self.eqation = None
 
-    def input_equation(self):
+    def input_equation(self) -> None:
+        """The user will input thier equaiton, with no output."""
         #this should allow the user to input thier equation in tersm of t or s
         equation_str = input('Enter the equation: ')
         self.equation = sp.sympify(equation_str)
 
    
     def calculate_transform(self):
+        """Uses sympy to calculate the laplace transform and the inverse laplace
+
+        Returns:
+            Expression: Depending on what the user inputs, the outputted expression 
+            is a result from the laplce transform
+        """
         if self.equation is not None:
             if self.s in self.equation.free_symbols:
                 # free_symbols is used to determine wheter a symbol is one or another in a expression
