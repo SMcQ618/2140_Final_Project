@@ -182,6 +182,8 @@ class Operations:
         angle = self._convert_angle()
         sin_value = math.sin(angle)
         cos_value = math.sin(angle)
+        if abs(cos_value) < 1e-15:
+            raise ValueError('Cannot calculate tangent')
         return sin_value/cos_value
     
     def absolute_value(self, x) -> int:
