@@ -179,10 +179,8 @@ class Operations:
         Returns:
             float: returns either the degree value or the radian value of some integer
         """
-        angle_radians = self._convert_angle()
-        tangent_value = math.tan(angle_radians)
-        if self.mode == "degrees":
-            return math.degrees(tangent_value)
+        #angle_radians = self._convert_angle()
+        tangent_value = math.tan(angle)
         return tangent_value 
     
     def absolute_value(self, x) -> int:
