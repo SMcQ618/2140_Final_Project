@@ -153,7 +153,7 @@ class Operations:
             angle (int): a number representing the angle of something
 
         Returns:
-            int: returns either the degree value or the radian value of some integer
+            float: returns either the degree value or the radian value of some integer
         """
         angle = self._convert_angle(angle)
         return math.sin(angle)
@@ -165,7 +165,7 @@ class Operations:
             angle (int): a number representing the angle of something
 
         Returns:
-            int: returns either the degree value or the radian value of some integer
+            float: returns either the degree value or the radian value of some integer
         """
         angle = self._convert_angle(angle)
         return math.cos(angle)
@@ -177,7 +177,7 @@ class Operations:
             angle (int): a number representing the angle of something
 
         Returns:
-            int: returns either the degree value or the radian value of some integer
+            float: returns either the degree value or the radian value of some integer
         """
         angle = self._convert_angle(angle)
         return math.tan(angle)
