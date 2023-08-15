@@ -376,11 +376,10 @@ btnEqual.grid(row=1, column= 6, pady = 1)
 #                    bd = 4,
 #                    command=added_value.divide).grid(row=1, column= 5, pady = 1)'''
 
-# btnPWR = tk.Button(calc, text="^", width=6, height=2,
-#                    bg='light blue', font = ('Helvetica',20,'bold'),
-#                    bd = 4, command=added_value.power).grid(row=1, column= 6, pady = 1)
-
-#btn
+btnPWR = tk.Button(calc, text="^", width=6, height=2,
+                   bg='light blue', font = ('Helvetica',20,'bold'), bd = 4)
+btnPWR["command"] = lambda: added_value.power
+btnPWR.grid(row=1, column= 6, pady = 1)
 
 numberpad = "123456789"
 i=0
@@ -438,9 +437,10 @@ editmenu.add_command(label = "Paste")
 
 root.config(menu=menubar)
 
-root.mainloop()
+
 
 if __name__ == "__main__":
     root = tk()
     calculator = Calculator_GUI(root)
     calculator.run()
+    root.mainloop()
