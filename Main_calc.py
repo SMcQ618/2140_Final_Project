@@ -10,12 +10,6 @@ from matrix import Matrix
 from new_fractions import NewFractions
 from Laplace_ import Laplace_transforms
 
-
-def update_textbox():
-        new_text = 'New text content'
-        text_box.delete('1.0', 'end')
-        text_box.insert('1.0', new_text)
-
 root = tk.Tk()
 root.title('Scientific Calculator')
 root.configure(background='black')
@@ -24,12 +18,15 @@ root.resizable(width=False, height=False)
 root.geometry('450x550 + 450+100')
 text_box = tk.Text(root, width=40, height=10)
 text_box.pack()
-update_button = tk.Button(root, text="Update", command=update_textbox)
-update_textbox.pack()
+#update_button = tk.Button(root, text="Update", command=update_textbox)
+#update_textbox.pack()
 calc = tk.Frame(root)
 calc.grid()
 messagebox = tk.MessageBox
-
+def update_textbox():
+        new_text = 'New text content'
+        text_box.delete('1.0', 'end')
+        text_box.insert('1.0', new_text)
 
 class Calculator_GUI():
     #initialize the event holders and the other modules that will be using
@@ -50,6 +47,10 @@ class Calculator_GUI():
         self.entry_var = tk.StringVar()
         self.entry = tk.Entry(root, textvariable=self.entry_var)
         self.entry.grid(row=0, column=0, columnspan=4)
+        self.txtDisplay = tk.Entry(self.root, font=('Helvetica', 20, 'bold'),
+                                   bg='black', fg='white', bd=30, width=28, justify=tk.RIGHT)
+        self.txtDisplay.grid(row=1, column=0, columnspan=4, pady=1)
+        self.txtDisplay.insert(0, "0")
         self.equation = tk.Entry(master, width = 36, borderwidth=5)
         self.equation.grid(row=1, column=0, columnspan=4)
         self.fraction_button = tk.Button(root, text="Fraction", command=self.fraction)
@@ -57,7 +58,7 @@ class Calculator_GUI():
         self.laplace_calc = Laplace_transforms()
         self.master = master
         self.createButton()
-
+    
     def numberInput(self, num):
         numniput_1 = txtDisplay.get()
         numniput_2 = str(num)
@@ -255,35 +256,94 @@ class Calculator_GUI():
         if isinstance(x, NewFractions) and isinstance(y, NewFractions):
             return NewFractions.__mul__(x, y)
     
-    def perform_Laplace_transforms(self):
-        equation_input = simpledialog.askstring
-        Laplace_transforms.input_equation(equation_input)
-        result_type, result = Laplace_transforms.calculate_transform()
-        return result_type, result
+    def laplace_transforms(self):
+        equation_input = tk.simpledialog.askstring("Equation Input", "Enter an equation:")
+        if equation_input:
+            result_type, result = Laplace_transforms.calculate_transform(equation_input)
+            self.display(f'{result_type}: {result}')
+        else:
+            self.display('No equation enterd')
         #display the result in the gui
-    #maybe make the buttons part of the transforms
-    # def calc_equation(equation_input):
-    #     try:
-    #         result = eval(equation_input)
-    #         return result
-    #     except Exception as e:
-    #         return str(e)
-        
-    # def create_widgets(self):
-    #     self.advance_button = tk.Button(self.root, text='Advance Calculator', command = self.perform_adv_math)
-    #     self.advance_button.pack()
-
-    # def input_equation():
-    #     equation = simpledialog.askstring("Equation Input", "Enter an equation:")
-    # if equation is not None:
-    #     # Write the equation to a file
-    #     with open("equation.txt", "w") as f:
-    #         f.write(equation)
-    #     result_label.config(text="Calculating...")
-
-
+    def perform_Laplace_transforms(self):
+        equation_input = tk.simpledialog.askstring("Equation Input", "Enter an equation:")
+        if equation_input:
+            result_type, result = Laplace_transforms.calculate_transform(equation_input)
+            self.display(f'{result_type}: {result}')
+        else:
+            self.display('No equation enterd')
+        #display the result in the gui
 
 added_value = Calculator_GUI()
+
+btnSolveLinear = tk.Button(calc, text="Solve Linear Equation", width=12,
+                    height=3, bg='light blue',
+                    font=('Helvetica', 12, 'bold'),
+                    bd=4, command=Linear_Eqs.solve_linear_equation)
+btnSolveLinear.grid(row=6, column=0, pady=1)
+
+btnSolveSystem = tk.Button(calc, text="Solve System of Equations", width=12,
+                        height=3, bg='light blue',
+                        font=('Helvetica', 12, 'bold'),
+                        bd=4, command=added_value.solve_system_of_equations)
+btnSolveSystem.grid(row=6, column=1, pady=1)
+btnLaplace_Tranfm = tk.Button(calc, text="Laplace Transformation", width=12,
+                            height=3, bg='light blue',
+                            font=('Helvetica', 12, 'bold'),
+                            bd=4, command = Laplace_transforms.calculate_transform)
+                            #command=added_value.laplace_transformation)
+btnLaplace_Tranfm.grid(row=6, column=2, pady=1)
+btnMatrix = tk.Button(calc, text="Input Matrix", width=12,
+                      height= 3, bg='light blue',
+                      font=('Helvetica', 12, 'bold'),
+                      bd=4, command= Matrix.input_matrix)
+#command=added_value.input_matrix)
+        
+txtDisplay = tk.Entry(calc, font=('Helvetica',20,'bold'),
+            bg='black',fg='white',
+            bd=30,width=28,justify=tk.RIGHT)
+txtDisplay.grid(row=0,column=0, columnspan=4, pady=1)
+txtDisplay.insert(0,"0")
+
+btnClear = tk.Button(calc, text=chr(67),width=6,
+                height=2,bg='light blue',
+                font=('Helvetica',20,'bold')
+                ,bd=4, command=added_value.clearScreen
+                ).grid(row=1, column= 0, pady = 1)
+        
+btnAllClear = tk.Button(calc, text=chr(67)+chr(69),
+                    width=6, height=2,
+                    bg='light blue',
+                    font=('Helvetica',20,'bold'),
+                    bd=4, command=added_value.clearAllEntry
+                    ).grid(row=1, column= 1, pady = 1)
+
+#btnDelete = tk.Button(calc, text="Delete", width=6, height=2,
+                      
+btnADD = tk.Button(calc, text="+", width=6, height=2,
+                   bg = 'light blue', font = ('Helvetica',20,'bold'),
+                   bd = 4,
+                   command=added_value.add).grid(row=1, column= 2, pady = 1)
+
+btnSUB = tk.Button(calc, text="-", width=6, height=2,
+                   bg = 'light blue', font = ('Helvetica',20,'bold'),
+                   bd = 4,
+                   command=added_value.subtract).grid(row=1, column= 3, pady = 1)
+
+btnMUL = tk.Button(calc, text="*", width=6, height=2,
+                   bg = 'light blue', font = ('Helvetica',20,'bold'),
+                   bd = 4,
+                   command=added_value.multiply).grid(row=1, column= 4, pady = 1)
+
+btnDIV = tk.Button(calc, text="/", width=6, height=2,
+                   bg = 'light blue', font = ('Helvetica',20,'bold'),
+                   bd = 4,
+                   command=added_value.divide).grid(row=1, column= 5, pady = 1)
+
+btnPWR = tk.Button(calc, text="^", width=6, height=2,
+                   bg='light blue', font = ('Helvetica',20,'bold'),
+                   bd = 4, command=added_value.power).grid(row=1, column= 6, pady = 1)
+
+#btn
 
 numberpad = "123456789"
 i=0
@@ -302,53 +362,10 @@ for j in range(2,5):
 result_label = tk.Label(root, text="")
 result_label.pack()
 
-#buttons
-btnSolveLinear = tk.Button(calc, text="Solve Linear Equation", width=12,
-                        height=3, bg='light blue',
-                        font=('Helvetica', 12, 'bold'),
-                        bd=4, command=added_value.solve_linear_equation)
-btnSolveLinear.grid(row=6, column=0, pady=1)
-
-btnSolveSystem = tk.Button(calc, text="Solve System of Equations", width=12,
-                        height=3, bg='light blue',
-                        font=('Helvetica', 12, 'bold'),
-                        bd=4, command=added_value.solve_system_of_equations)
-btnSolveSystem.grid(row=6, column=1, pady=1)
-btnLaplace_Tranfm = tk.Button(calc, text="Laplace Transformation", width=12,
-                              height=3, bg='light blue',
-                              font=('Helvetica', 12, 'bold'),
-                              bd=4, command=added_value.laplace_transformation)
-btnLaplace_Tranfm.grid(row=6, column=2, pady=1)
-
-input_button = tk.Button(root, text="Open Input Dialog", command=open_input_dialog)
-input_button.pack(pady=10)
-
-txtDisplay = tk.Entry(calc, font=('Helvetica',20,'bold'),
-                   bg='black',fg='white',
-                   bd=30,width=28,justify=tk.RIGHT)
-txtDisplay.grid(row=0,column=0, columnspan=4, pady=1)
-txtDisplay.insert(0,"0")
-
-btnClear = tk.Button(calc, text=chr(67),width=6,
-                  height=2,bg='light blue',
-                  font=('Helvetica',20,'bold')
-                  ,bd=4, command=added_value.clearScreen
-                 ).grid(row=1, column= 0, pady = 1)
- 
-btnAllClear = tk.Button(calc, text=chr(67)+chr(69),
-                     width=6, height=2,
-                     bg='light blue',
-                     font=('Helvetica',20,'bold'),
-                     bd=4,
-                     command=added_value.clearAllEntry
-                    ).grid(row=1, column= 1, pady = 1)
-
-# lblDisplay = Label(calc, text = "Scientific Calculator",
-#                    font=('Helvetica',30,'bold'),
-#                    bg='black',fg='white',justify=CENTER)
- 
-# lblDisplay.grid(row=0, column= 4,columnspan=4)
- 
+lblDisplay = tk.Label(calc, text = "Scientific Calculator",
+                    font=('Helvetica',30,'bold'),
+                    bg='black',fg='white',justify=tk.CENTER)
+lblDisplay.grid(row=0, column= 4,columnspan=4)
 
 def isExit():
     isExit = messagebox.askyesno("Scientific Calculator",
@@ -364,6 +381,16 @@ def Scientific():
 def Standard():
     root.resizable(width=False, height=False)
     root.geometry("480x568+0+0")
+
+def button_clicked(self, value):
+    current_value = self.equation_entry.get()
+    self.equation_entry.delete(0, tk.END)
+    self.equation_entry.insert(tk.END, current_value + value)
+
+def solve_equation(self):
+    equation = self.equations_entry.get()
+    solution = self.differential_solver.solve_differential_equation(equation)
+    self.result_label.config(text=solution)
 
 menubar = tk.Menu(calc)
 
@@ -385,9 +412,8 @@ editmenu.add_command(label = "Paste")
 
 root.config(menu=menubar)
 
-def run(self):
-    self.root.mainloop()
- 
+root.mainloop()
+
 if __name__ == "__main__":
     root = tk()
     calculator = Calculator_GUI(root)
