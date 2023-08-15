@@ -177,7 +177,6 @@ class Calculator_GUI():
         except ValueError as e:
             self.display("Error: " + str(e))
 
-
     def input_matrix(self):
         mat = input(messagebox.showinfo("Input Matrix", "Please enter the matrix"))
         Matrix.input_matrix()
@@ -187,6 +186,7 @@ class Calculator_GUI():
             Matrix.add_matrx(self, other)
         else:
             self.input_matrix()
+    
     def multiply_matrix(self, other):
         if self.matrix:
             Matrix.matrix_multiply(self, other)
@@ -204,7 +204,14 @@ class Calculator_GUI():
     
     def rref(self):
         Matrix.reduced_row_echelon_form(self)
+        return Matrix.reduced_row
     
+    def det(self):
+        if self.matrix:
+            Matrix.det(self)
+        else:
+            self.input_matrix()
+
     #def riemsne(self):
     #    Adv_Methods.riemsne(self, method =     
     def create_widgets(self):
