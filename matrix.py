@@ -116,6 +116,11 @@ class Matrix:
         result_matrix = np.dot(self.matrix, other_matrix.matrix)
         return Matrix(result_matrix)
 
+    def det(self):
+        """Determine the determinant of the matrix'''
+        """
+        return np.linalg.det(self.matrix)
+
     def transpose(self):
         """Be able to take a row and column and switch them"""
         self.matrix = self.matrix.T
