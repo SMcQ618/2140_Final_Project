@@ -23,10 +23,6 @@ text_box.pack()
 calc = tk.Frame(root)
 calc.grid()
 messagebox = tk.MessageBox
-def update_textbox():
-        new_text = 'New text content'
-        text_box.delete('1.0', 'end')
-        text_box.insert('1.0', new_text)
 
 class Calculator_GUI():
     #initialize the event holders and the other modules that will be using
@@ -59,6 +55,11 @@ class Calculator_GUI():
         self.master = master
         self.createButton()
     
+    def update_textbox():
+        new_text = 'New text content'
+        text_box.delete('1.0', 'end')
+        text_box.insert('1.0', new_text)
+
     def numberInput(self, num):
         numniput_1 = txtDisplay.get()
         numniput_2 = str(num)
@@ -264,6 +265,7 @@ class Calculator_GUI():
         else:
             self.display('No equation enterd')
         #display the result in the gui
+
     def perform_Laplace_transforms(self):
         equation_input = tk.simpledialog.askstring("Equation Input", "Enter an equation:")
         if equation_input:
@@ -272,6 +274,17 @@ class Calculator_GUI():
         else:
             self.display('No equation enterd')
         #display the result in the gui
+
+    def button_clicked(self, value):
+        current_value = self.equation_entry.get()
+        self.equation_entry.delete(0, tk.END)
+        self.equation_entry.insert(tk.END, current_value + value)
+
+    def solve_equation(self):
+        equation = self.equations_entry.get()
+        solution = self.differential_solver.solve_differential_equation(equation)
+        self.result_label.config(text=solution)
+
 
 added_value = Calculator_GUI()
 
@@ -319,29 +332,53 @@ btnAllClear = tk.Button(calc, text=chr(67)+chr(69),
 
 #btnDelete = tk.Button(calc, text="Delete", width=6, height=2,
                       
-btnADD = tk.Button(calc, text="+", width=6, height=2,
+'''btnADD = tk.Button(calc, text="+", width=6, height=2,
                    bg = 'light blue', font = ('Helvetica',20,'bold'),
                    bd = 4,
-                   command=added_value.add).grid(row=1, column= 2, pady = 1)
+                   command=added_value.add).grid(row=1, column= 2, pady = 1)'''
+
+btnADD = tk.Button(calc, text='+', width=6, height=2, bg = 'light red', 
+                   font=('Helvetica',20,'bold'), bd=4)
+btnADD["command"] = lambda: added_value.add
+btnADD.grid(row=1, column= 2, pady = 1)
 
 btnSUB = tk.Button(calc, text="-", width=6, height=2,
-                   bg = 'light blue', font = ('Helvetica',20,'bold'),
-                   bd = 4,
-                   command=added_value.subtract).grid(row=1, column= 3, pady = 1)
+                   bg = 'light blue', font = ('Helvetica',20,'bold'), bd = 4)
+btnSUB["command"] = lambda: added_value.subtract
+btnSUB.grid(row=1, column= 3, pady = 1)
 
+btnMul = tk.Button(calc, text="*", width=6, height=2, bg = 'light blue',
+                   font=('Helvetica',20,'bold'), bd = 4)
+btnMul["command"] = lambda: added_value.multiply
+btnMul.grid(row=1, column= 4, pady = 1)
+'''
 btnMUL = tk.Button(calc, text="*", width=6, height=2,
                    bg = 'light blue', font = ('Helvetica',20,'bold'),
                    bd = 4,
-                   command=added_value.multiply).grid(row=1, column= 4, pady = 1)
+                   command=added_value.multiply).grid(row=1, column= 4, pady = 1)'''
 
-btnDIV = tk.Button(calc, text="/", width=6, height=2,
-                   bg = 'light blue', font = ('Helvetica',20,'bold'),
-                   bd = 4,
-                   command=added_value.divide).grid(row=1, column= 5, pady = 1)
+btnDIV = tk.Button(calc, text="/", width=6, height=2, bg = 'light blue',
+                   font=('Helvetica',20,'bold'), bd = 4)
+btnDIV["command"] = lambda: added_value.divide
+btnDIV.grid(row=1, column= 5, pady = 1)
 
-btnPWR = tk.Button(calc, text="^", width=6, height=2,
-                   bg='light blue', font = ('Helvetica',20,'bold'),
-                   bd = 4, command=added_value.power).grid(row=1, column= 6, pady = 1)
+btnDot = tk.Button(calc, text=".", width=6, height=2, bg = 'light blue',
+                   font=('Helvetica',20,'bold'), bd = 4)
+btnDot["command"] = lambda: added_value.numberInput('.')
+
+btnEqual = tk.Button(calc, text="=", width=6, height=2, bg = 'light blue',
+                     font=('Helvetica',20,'bold'), bd = 4)
+btnEqual["command"] = lambda: added_value.equal
+btnEqual.grid(row=1, column= 6, pady = 1)
+
+# '''tk.Button(calc, text="/", width=6, height=2,
+#                    bg = 'light blue', font = ('Helvetica',20,'bold'),
+#                    bd = 4,
+#                    command=added_value.divide).grid(row=1, column= 5, pady = 1)'''
+
+# btnPWR = tk.Button(calc, text="^", width=6, height=2,
+#                    bg='light blue', font = ('Helvetica',20,'bold'),
+#                    bd = 4, command=added_value.power).grid(row=1, column= 6, pady = 1)
 
 #btn
 
@@ -369,7 +406,7 @@ lblDisplay.grid(row=0, column= 4,columnspan=4)
 
 def isExit():
     isExit = messagebox.askyesno("Scientific Calculator",
-                                        "Do you want to exit?")
+                                 "Do you want to exit?")
     if isExit>0:
         root.destroy()
         return
@@ -381,16 +418,6 @@ def Scientific():
 def Standard():
     root.resizable(width=False, height=False)
     root.geometry("480x568+0+0")
-
-def button_clicked(self, value):
-    current_value = self.equation_entry.get()
-    self.equation_entry.delete(0, tk.END)
-    self.equation_entry.insert(tk.END, current_value + value)
-
-def solve_equation(self):
-    equation = self.equations_entry.get()
-    solution = self.differential_solver.solve_differential_equation(equation)
-    self.result_label.config(text=solution)
 
 menubar = tk.Menu(calc)
 
@@ -408,7 +435,6 @@ editmenu.add_command(label = "Cut")
 editmenu.add_command(label = "Copy")
 editmenu.add_separator()
 editmenu.add_command(label = "Paste")
-
 
 root.config(menu=menubar)
 
