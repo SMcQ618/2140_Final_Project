@@ -438,6 +438,7 @@ editmenu.add_command(label = "Paste")
 root.config(menu=menubar)
 
 
+print('test')
 
 if __name__ == "__main__":
     root = tk()
