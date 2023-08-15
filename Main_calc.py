@@ -438,7 +438,8 @@ editmenu.add_command(label = "Paste")
 root.config(menu=menubar)
 
 
-print('test')
+print('test 68')
+print('test 69')
 
 
 if __name__ == "__main__":
