@@ -34,9 +34,9 @@ class NewFractions:
         """Multiplies two fractions."""
         return NewFractions(self.numerator * other.numerator, self.denominator * other.denominator)
 
-    def _equa(self, other) -> bool:
-        """Checks if two fractions are equal."""
-        return self.numerator * other.denominator == self.denominator * other.numerator
+    # def _equa(self, other) -> bool:
+    #     """Checks if two fractions are equal."""
+    #     return self.numerator * other.denominator == self.denominator * other.numerator
 
     def __str__(self) -> str:
         """Returns the string representation of the fraction."""

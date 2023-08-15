@@ -12,7 +12,7 @@ class Adv_Methods:
     vectors, stats, probability, financial calculatos"""
 
     def __init__(self,  lower_lim, upper_lim,data, expression,num_intervals,step_size=0.001):
-        self,lower_lim = lower_lim
+        self.lower_lim = lower_lim
         self.upper_lim = upper_lim
         self.expression = expression
         self.step_size = step_size
@@ -118,7 +118,7 @@ class Adv_Methods:
         integral_exp = sp.sympify(self.expression)
         interval_size = (self.upper_lim - self.lower_lim) / self.num_intervals
 
-        def integrand(x):
+    def integrand(x):
             """Helper function to represent the integrand of the expression. And valuates the
             intergrand at the specified value of x 
 
@@ -131,16 +131,16 @@ class Adv_Methods:
             return integral_exp.subs(x, x)
         
         total_sum = 0
-        for i in range(self.num_intervals):
-            if method == 'left':
-                value = integrand(self.lower_limit + i * interval_size)
-            elif method == 'right':
-                value = integrand(self.lower_limit + (i + 1) * interval_size)
-            elif method == 'midpoint':
-                value = integrand(self.lower_limit + (i + 0.5) * interval_size)
-            total_sum += value
+            for i in range(self.num_intervals):
+                if method == 'left':
+                    value = integrand(self.lower_limit + i * interval_size)
+                elif method == 'right':
+                    value = integrand(self.lower_limit + (i + 1) * interval_size)
+                elif method == 'midpoint':
+                    value = integrand(self.lower_limit + (i + 0.5) * interval_size)
+                total_sum += value
         #calculate teh approximate integral using the rieman sum
-        approximate_integral =  total_sum * interval_size
-        return approximate_integral
+            approximate_integral =  total_sum * interval_size
+    return approximate_integral
     
 print(int("43"))

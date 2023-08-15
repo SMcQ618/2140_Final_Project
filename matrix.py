@@ -16,6 +16,60 @@ class Matrix:
         self.cols = cols
         self.matrix = np.array(matrix)
 
+    def select_mode(self, mode):
+        self.mode = mode
+        print('Select a mode:\n')
+        print('1. Input Matrix')
+        print('2. Add Matrix')
+        print('3. Multiply Matrix')
+        print('4. Transpose Matrix')
+        print('5. Switch Matrix')
+        print('6. Scale Row')
+        print('7. Add Scaled Column')
+        print('8. REF')
+        print('9. RREF')
+        choice = input('Enter your choice: ')
+        if choice == '1':
+            Matrix.input_matrix(self)
+            self.display_matrx()
+        elif choice == '2':
+            Matrix.input_matrix(self)
+            other_matrix = Matrix.input_matrix()
+            Matrix.add_matrx(self, other_matrix)
+            self.display_matrx()
+        elif choice == '3':
+            Matrix.input_matrix(self)
+            other_matrix = Matrix.input_matrix()
+            Matrix.matrix_multiply(self, other_matrix)
+            self.display_matrx()
+        elif choice == '4':
+            Matrix.input_matrix(self)
+            Matrix.transpose(self)
+            self.display_
+        elif choice == '5':
+            Matrix.input_matrix(self)
+            Matrix.switch(self)
+            self.display_matrx()
+        elif choice == '6':
+            Matrix.input_matrix(self)
+            Matrix.scale_row(self)
+            self.display_matrx()
+        elif choice == '7':
+            Matrix.input_matrix(self)
+            Matrix.add_scaled_column(self)
+            self.display_matrx()
+        elif choice == '8':
+            Matrix.input_matrix(self)
+            Matrix.ref(self)
+            self.display_matrx()
+        elif choice == '9':
+            Matrix.input_matrix(self)
+            Matrix.rref(self)
+            self.display_matrx()
+        else:
+            print('Invalid input')
+
+
     def input_matrix(self):
         """Have the user be able to input values for the matrix
         """
