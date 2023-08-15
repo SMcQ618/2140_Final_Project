@@ -440,7 +440,7 @@ root.config(menu=menubar)
 
 print('test 68')
 print('test 69')
-
+print('test 70')
 
 if __name__ == "__main__":
     root = tk()
