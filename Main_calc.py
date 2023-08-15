@@ -50,10 +50,13 @@ class Calculator_GUI():
         self.entry_var = tk.StringVar()
         self.entry = tk.Entry(root, textvariable=self.entry_var)
         self.entry.grid(row=0, column=0, columnspan=4)
+        self.equation = tk.Entry(master, width = 36, borderwidth=5)
+        self.equation.grid(row=1, column=0, columnspan=4)
         self.fraction_button = tk.Button(root, text="Fraction", command=self.fraction)
         self.fraction_button.grid(row=4, column=4)
         self.laplace_calc = Laplace_transforms()
         self.master = master
+        self.createButton()
 
     def numberInput(self, num):
         numniput_1 = txtDisplay.get()
@@ -210,13 +213,7 @@ class Calculator_GUI():
         if self.matrix:
             Matrix.det(self)
         else:
-            self.input_matrix()
-
-    #def riemsne(self):
-    #    Adv_Methods.riemsne(self, method =     
-    def create_widgets(self):
-        self.advance_button = tk.Button(self.root, text='Advance Calculator', command = self.perform_adv_math)
-        self.advance_button.pack()
+            self.input_matrix() 
 
     def perform_adv_math(self):
         self.lower_lim = float(self.lower_lim_entry.get())
@@ -258,26 +255,32 @@ class Calculator_GUI():
         if isinstance(x, NewFractions) and isinstance(y, NewFractions):
             return NewFractions.__mul__(x, y)
     
-    def Laplace_transforms():
-        equation_input = input('Enter the equation:')
+    def perform_Laplace_transforms(self):
+        equation_input = simpledialog.askstring
         Laplace_transforms.input_equation(equation_input)
         result_type, result = Laplace_transforms.calculate_transform()
+        return result_type, result
         #display the result in the gui
-    
-    def calc_equation(equation_input):
-        try:
-            result = eval(equation_input)
-            return result
-        except Exception as e:
-            return str(e)
-    
-    def input_equation():
-        equation = simpledialog.askstring("Equation Input", "Enter an equation:")
-    if equation is not None:
-        # Write the equation to a file
-        with open("equation.txt", "w") as f:
-            f.write(equation)
-        result_label.config(text="Calculating...")
+    #maybe make the buttons part of the transforms
+    # def calc_equation(equation_input):
+    #     try:
+    #         result = eval(equation_input)
+    #         return result
+    #     except Exception as e:
+    #         return str(e)
+        
+    # def create_widgets(self):
+    #     self.advance_button = tk.Button(self.root, text='Advance Calculator', command = self.perform_adv_math)
+    #     self.advance_button.pack()
+
+    # def input_equation():
+    #     equation = simpledialog.askstring("Equation Input", "Enter an equation:")
+    # if equation is not None:
+    #     # Write the equation to a file
+    #     with open("equation.txt", "w") as f:
+    #         f.write(equation)
+    #     result_label.config(text="Calculating...")
+
 
 
 added_value = Calculator_GUI()
@@ -340,11 +343,11 @@ btnAllClear = tk.Button(calc, text=chr(67)+chr(69),
                      command=added_value.clearAllEntry
                     ).grid(row=1, column= 1, pady = 1)
 
-lblDisplay = Label(calc, text = "Scientific Calculator",
-                   font=('Helvetica',30,'bold'),
-                   bg='black',fg='white',justify=CENTER)
+# lblDisplay = Label(calc, text = "Scientific Calculator",
+#                    font=('Helvetica',30,'bold'),
+#                    bg='black',fg='white',justify=CENTER)
  
-lblDisplay.grid(row=0, column= 4,columnspan=4)
+# lblDisplay.grid(row=0, column= 4,columnspan=4)
  
 
 def isExit():
@@ -378,42 +381,14 @@ editmenu.add_command(label = "Cut")
 editmenu.add_command(label = "Copy")
 editmenu.add_separator()
 editmenu.add_command(label = "Paste")
- 
-if __name__ == "__main__":
-    main()
+
 
 root.config(menu=menubar)
 
 def run(self):
     self.root.mainloop()
  
-#root.mainloop()
-
 if __name__ == "__main__":
     root = tk()
     calculator = Calculator_GUI(root)
     calculator.run()
-
-# def main():
-#     calculator = Calculator_GUI()
-    
-#     while True:
-#         print("Calculator Menu:")
-#         print("1. Select Mode")
-#         print("2. Create Matrix")
-#         print("3. Perform Matrix Operations")
-#         print("4. Exit")
-        
-#         choice = input("Enter your choice: ")
-
-#         if choice == "1":
-#             calculator.select_mode()
-#         elif choice == "2":
-#             calculator.create_matrix()
-#         elif choice == "3":
-#             calculator.perform_matrix_operations()
-#         elif choice == "4":
-#             print("Exiting the calculator.")
-#             break
-#         else:
-#             print("Invalid choice. Please select a valid option.")
