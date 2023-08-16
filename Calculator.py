@@ -4,8 +4,6 @@ import math
 from matriX import MatriX
 from Matrix_operations import Matrix_Operations
 
-
-
 class Calculator:
     def __init__(self, master):
         self.master = master
