@@ -4,6 +4,7 @@ import math
 from matriX import MatriX
 from Matrix_operations import Matrix_Operations
 from laplaceG import LaplaceTrsG
+from EquationSolver import EquationSolver
 
 
 class Calculator:
@@ -116,6 +117,14 @@ class Advance_calculator(Calculator):
         laplace_transforms_button = tk.Button(self.button_frame, text="Transforms", width = 10, command=self.open_laplace_view)
         laplace_transforms_button.grid(row=4, column=8, columnspan=2, padx=5, pady=5)
         
+        #create methods for advance for linear
+        equation_solver_button = tk.Button(self.button_frame, text="Equation Solver", width=10, command=self.open_equation_solver)
+        equation_solver_button.grid(row=4, column=9, padx=5, pady=5)
+
+    def open_equation_solver(self):
+        equation_solver_window = tk.Toplevel(self.master)
+        equation_solver_app = EquationSolver(equation_solver_window)
+
     def open_matrix_view(self):
         matrix_operation_window = tk.Toplevel(self.master)
         matrix_operations_app = Matrix_Operations(matrix_operation_window)   
@@ -270,5 +279,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-#print(43)
