@@ -2,72 +2,101 @@
 import numpy as np
 import numpy.linalg
 
-#need to write a way tp 
 class Linear_Eqs:
     """Class that represents a linear equation."""
-    def __init__(self,coefficients, constant) -> None:
-        self.coefficents = coefficients
+    def __init__(self, coefficients, constant):
+        """
+        Initialize a linear equation.
+
+        Args:
+            coefficients (list): List of coefficients for each term of the equation.
+            constant (float): Constant term of the equation.
+        """
+        self.coefficients = coefficients
         self.constant = constant
     
     def solve_for_variable(self):
         """
-        Solve for the linear equation for the variable.
-
-        Args: 
-        a (float): Coefficient of x
-        b (float): Constant term
+        Solve for the variable in the linear equation.
 
         Returns:
-        float: the value of the variable x
+            float: The value of the variable.
+        
         Raises:
-        ValueError: if the coefficient list is empty
+            ValueError: If the coefficient list is empty.
         """
         if self.coefficients:
-            a = np.array([self.coefficients])  # Create a 2D array from coefficients
+            a = np.array([self.coefficients])
             b = np.array([self.constant])
             solution = np.linalg.solve(a, b)
-            return solution[0]  # Extract the solution from the 1x1 array
+            return solution[0]
         else:
             raise ValueError('Coefficient list is empty')
         
     def __str__(self):
-        """Return a formatted string representation of the equation.
+        """
+        Return a formatted string representation of the equation.
 
         Returns:
-            str: String representaion of the equation.
+            str: String representation of the equation.
         """
-        equation_str = " + ".join([f"{coeff}x^{exp}" for exp, coeff in enumerate(self.coefficients[::-1]) if coeff != 0])
+        terms = []
+        for exp, coeff in enumerate(self.coefficients[::-1]):
+            if coeff != 0:
+                if exp == 0:
+                    terms.append(str(coeff))
+                elif exp == 1:
+                    terms.append(f"{coeff}x")
+                else:
+                    terms.append(f"{coeff}x^{exp}")
+        equation_str = " + ".join(terms)
         equation_str += f" = {self.constant}"
         return equation_str
-    
+
 class SystemOfEQs:
-    """Class that represents a system of linear equartions"""
-    def __init__(self) -> None:
-        """Initializing an empty system of equations"""
+    """Class that represents a system of linear equations."""
+    def __init__(self):
+        """Initialize an empty system of equations."""
         self.equations = []
 
-    def add_equaiton(self, equation):
-        """Add an equation to the system.
+    def add_equation(self, equation):
+        """
+        Add an equation to the system.
 
         Args:
-            equation (Linear_Eq): The equation to be added
+            equation (Linear_Eq): The equation to be added.
         """
         self.equations.append(equation)
 
-    def solve_eq(self):
-        """Solve the system
-
-        Raises:
-            ValueError: If theres no equation in teh system
+    def solve_system(self):
+        """
+        Solve the system of equations.
 
         Returns:
-            list: A list of solutions for each equation in the system
+            list: A list of solutions for each equation in the system.
+        
+        Raises:
+            ValueError: If there are no equations in the system.
         """
         if not self.equations:
-            raise ValueError('No equation ni the system')
+            raise ValueError('No equations in the system')
         
         coefficient_matrix = np.array([equation.coefficients for equation in self.equations])
         constant_matrix = np.array([equation.constant for equation in self.equations])
         solutions = np.linalg.solve(coefficient_matrix, constant_matrix)
 
         return solutions
+
+# Example usage
+eq1 = Linear_Eqs([2, -3, 1], 4)
+eq2 = Linear_Eqs([1, 2, -1], -1)
+
+system = SystemOfEQs()
+system.add_equation(eq1)
+system.add_equation(eq2)
+
+try:
+    solutions = system.solve_system()
+    print("Solutions:", solutions)
+except ValueError as e:
+    print(e)
