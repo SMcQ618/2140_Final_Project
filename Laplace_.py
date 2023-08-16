@@ -10,40 +10,31 @@ class Laplace_transforms:
         self.eqation = None
 
     def input_equation(self) -> None:
-        """The user will input thier equaiton, with no output."""
-        #this should allow the user to input thier equation in tersm of t or s
+        """The user will input their equation, with no output."""
+        # This should allow the user to input their equation in terms of t or s
         equation_str = input('Enter the equation: ')
         self.equation = sp.sympify(equation_str)
 
    
-    def calculate_transform(self):
-        """Uses sympy to calculate the laplace transform and the inverse laplace
+    def calculate_laplace(self):
+        """Uses sympy to calculate the Laplace transform and the inverse Laplace transform.
 
         Returns:
             Expression: Depending on what the user inputs, the outputted expression 
-            is a result from the laplce transform
+            is a result from the Laplace transform.
         """
         if self.equation is not None:
             if self.s in self.equation.free_symbols:
-                # free_symbols is used to determine wheter a symbol is one or another in a expression
                 laplace_transform = sp.laplace_transform(self.equation, self.t, self.s)
                 return "Regular Laplace Transform:", laplace_transform[0]
             elif self.t in self.equation.free_symbols:
-                #cos and i guess sine are not being handled well
-                equation_exp = self.eqation.rewrite(sp.cos, sp.sin, sp.tan)
+                # Handling of trigonometric functions and inverse Laplace transform
+                equation_exp = self.equation.rewrite(sp.cos, sp.sin, sp.tan)
                 inverse_laplace_expr = sp.inverse_laplace_transform(equation_exp, self.s, self.t)
                 return "Inverse Laplace Transform:", inverse_laplace_expr
             else:
+                # If neither s nor t is in the equation, treat it as a constant
                 laplace_of_constant = sp.laplace_transform(self.equation, self.t, self.s)
                 return "Laplace Transform:", laplace_of_constant[0]
         else:
             return "No equation was inputted"
-
-calculator = Laplace_transforms()
-
-# Input an equation from the user
-calculator.input_equation()
-
-# Calculate and print Laplace transform or inverse Laplace transform
-result_type, result = calculator.calculate_transform()
-print(result_type, result)

@@ -16,11 +16,14 @@ class LaplaceTrsG:
         self.equation_entry = tk.Entry(master)
         self.equation_entry.pack()
 
-        self.calculate_button = tk.Button(master, text="Calculate Transform", command=self.calculate_transform)
-        self.calculate_button.pack()
+        # self.calculate_button = tk.Button(master, text="Calculate Transform", command=self.calculate_laplace)
+        # self.calculate_button.pack()
 
         self.result_label = tk.Label(master, text="", font=("Helvetica", 12))
         self.result_label.pack()
+        
+        self.solve_button = tk.Button(master, text="Solve Equation", command=self.solve_equation)
+        self.solve_button.pack(pady=10)
 
         self.create_ui()
 
@@ -42,10 +45,21 @@ class LaplaceTrsG:
     def calculate_laplace(self):
         equation_str = self.equation_entry.get()
         calculator = Laplace_transforms()
-        calculator.input_equation(equation_str)
-
-        result_type, result = calculator.calculate_transform()
+        calculator.input_equation()
+        
+        result_type, result = calculator.calculate_laplace()
         self.display_result(result_type, result)
 
+    def solve_equation(self):
+        """Creating the solve button so it solves
+        """
+        equation_str = self.equation_entry.get()
+        try:
+            equation = sp.simplify(equation_str)
+            solution = equation.simplify()
+            self.display_result("Simplified Equation:", solution)
+        except Exception as e:
+            self.display_result("Error:", str(e))
+    
     def display_result(self, result_type, result):
         self.result_label.config(text=f'{result_type}\n{result}')
