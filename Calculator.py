@@ -100,7 +100,7 @@ class Advance_calculator(Calculator):
             ('sqrt', 1, 5), ('^2', 2, 5), ('^3', 3, 5), ('1/x', 4, 5),
             ('sin', 1, 6), ('cos', 2, 6), ('tan', 3, 6), ('log', 4, 6),
             ('(', 1, 7), (')', 2, 7), ('π', 3, 7), ('e', 4, 7),
-            ('Matrix', 1, 8), ('Laplace', 3, 8)
+            ('Matrix', 1, 8), ('Laplace', 2, 8)
         ]
 
         for button_info in advanced_buttons:
@@ -109,8 +109,8 @@ class Advance_calculator(Calculator):
             button.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
             button.config(command=lambda b=button: self.on_advanced_button_click(b))
             self.buttons.append(button)
-        matrix_operations_button = tk.Button(self.button_frame, text="Matrix Operations", width=10, command=self.open_matrix_view)
-        matrix_operations_button.grid(row=4, column=6, columnspan=2, padx=5, pady=5)
+        matrix_operations_button = tk.Button(self.button_frame, text="M_Operations", width=10, command=self.open_matrix_view)
+        matrix_operations_button.grid(row=3, column=8, columnspan=2, padx=5, pady=5)
         
         #creates buttons for lapalce view
         laplace_transforms_button = tk.Button(self.button_frame, text="Transforms", width = 10, command=self.open_laplace_view)
