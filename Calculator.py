@@ -119,8 +119,9 @@ class Advance_calculator(Calculator):
         
         #create methods for advance for linear
         equation_solver_button = tk.Button(self.button_frame, text="Equation Solver", width=10, command=self.open_equation_solver)
-        equation_solver_button.grid(row=4, column=9, padx=5, pady=5)
+        equation_solver_button.grid(row=1, column=8, columnspan=2, padx=5, pady=5)  # Adjust the row and column as needed
 
+    #@classmethod
     def open_equation_solver(self):
         equation_solver_window = tk.Toplevel(self.master)
         equation_solver_app = EquationSolver(equation_solver_window)
@@ -255,7 +256,7 @@ class Advance_calculator(Calculator):
         elif text == "Laplace":
             self.open_laplace_view()
 
-def main():
+'''def main():
     root = tk.Tk()
     app = Calculator(root)
 
@@ -272,10 +273,36 @@ def main():
     view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator)
     view_menu.add_command(label="Matrix Calculator", command=app.advance_calculator)  # Add this line
     view_menu.add_command(label="Laplace", command=app.open_laplace_view)
+    # Inside the main method where you create the "View" menu
+    view_menu.add_command(label="Equation Solver", command=app.open_equation_solver)
+
+    menubar.add_cascade(label="View", menu=view_menu)
+
+    root.mainloop()
+
+if __name__ == "__main__":
+    main()'''
+def main():
+    root = tk.Tk()
+    app = Advance_calculator(root)  # Create an instance of Advance_calculator
+
+    menubar = tk.Menu(root)
+    root.config(menu=menubar)
+
+    # Create a "File" menu with an "Exit" option
+    file_menu = tk.Menu(menubar, tearoff=0)
+    file_menu.add_command(label="Exit", command=root.destroy)
+    menubar.add_cascade(label="File", menu=file_menu)
+
+    # Create the "View" menu with the different options
+    view_menu = tk.Menu(menubar, tearoff=0)
+    view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator)
+    view_menu.add_command(label="Matrix Calculator", command=app.open_matrix_view)
+    view_menu.add_command(label="Laplace", command=app.open_laplace_view)
+    view_menu.add_command(label="Equation Solver", command=app.open_equation_solver)  # Add this line
     menubar.add_cascade(label="View", menu=view_menu)
 
     root.mainloop()
 
 if __name__ == "__main__":
     main()
-
