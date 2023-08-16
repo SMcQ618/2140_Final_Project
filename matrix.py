@@ -1,7 +1,7 @@
 import numpy as np
 
 #need to wrtie a method that uses
-class Matrix:
+class MatriX:
     """This is the matrix class for all the linear algebra"""
     def __init__(self, rows, cols, matrix):
         """Initializing the MatrixOperations
@@ -37,7 +37,7 @@ class Matrix:
             self.display_matrx()
         elif choice == '2':
             self.input_matrix(self)
-            other_matrix = Matrix.input_matrix()
+            other_matrix = MatriX.input_matrix()
             self.add_matrx(self, other_matrix)
             self.display_matrx()
         elif choice == '3':
@@ -101,7 +101,7 @@ class Matrix:
 
         #before made it that I had to iterate.
         result_matrix = self.matrix + other_matrix.matrix
-        return Matrix(self.rows, self.cols, result_matrix)
+        return MatriX(self.rows, self.cols, result_matrix)
     
     def matrix_multiply(self, other_matrix):
         """Multiply a matrix by anotehr one
@@ -116,7 +116,7 @@ class Matrix:
             raise ValueError('Number of columns in first does not match second rows')
         
         result_matrix = np.dot(self.matrix, other_matrix.matrix)
-        return Matrix(self.rows, other_matrix, result_matrix)
+        return MatriX(self.rows, other_matrix, result_matrix)
 
     def det(self):
         """Determine the determinant of the matrix'''
