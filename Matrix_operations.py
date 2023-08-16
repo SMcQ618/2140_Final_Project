@@ -42,6 +42,8 @@ class Matrix_Operations:
 
         self.matrix_label = tk.Label(self.master, text="", font=("Helvetica", 12))
         self.matrix_label.pack()
+        show_matrix_button = tk.Button(self.master,text="Show Matrix", command=self.show_matrix_values)
+        show_matrix_button.pack()
     
     def create_matrix_entries(self):
         """Creates the entries for the matrix that the user puts in"""
@@ -85,7 +87,7 @@ class Matrix_Operations:
             self.matrix = MatriX(rows, cols, matrix_values)
             self.result_label.config(text="Matrix created successfully!")
 
-            # Create matrix entries after the matrix has been successfully created
+            self.update_matrix_label()
         except ValueError:
             self.result_label.config(text="Invalid input. Please enter valid integer values.")
 
@@ -147,63 +149,24 @@ class Matrix_Operations:
         self.display_result(result_matrix)
         self.update_matrix_label()
 
-    '''def evaluate_matrix(self):
-    # create a list to store matrix values entered by the user
+    def show_matrix_values(self):
         matrix_values = []
 
-        for entry_row in self.matrix_entries:
+        for row_entries in self.matrix_entries:
             row_values = []
-            # Iterate through each entry in the row
-            for entry in entry_row:
+            for entry in row_entries:
                 value = entry.get()
-                # Convert empty or whitespace values to 0
-                if value.strip() == "":
-                    value = 0
-                # Convert the value to a floating-point number and add to the row
-                row_values.append(float(value))
-            # Add the row of values to the matrix_values list
+                row_values.append(value)
             matrix_values.append(row_values)
 
-        print("Matrix Values:", matrix_values)  # Add this line for debugging
+        matrix_text = "\n".join([" ".join(row) for row in matrix_values])
 
-        operation = self.operation_var.get()
-
-        if operation == "Operation 1: Add":
-            result_matrix = matrix.add_matrix()
-        elif operation == "Operation 2: Multiply":
-            result_matrix = matrix.matrix_multiply()
-        elif operation == "Operation 3: Determinant":
-            result_matrix = matrix.det()
-        elif operation == "Operation 4: Transpose":
-            result_matrix = matrix.transpose()
-        elif operation == "Operation 5: REF":
-            result_matrix = matrix.row_echelon_form()
-        elif operation == "Operation 6: RREF":
-            result_matrix = matrix.reduced_row_echelon_form()
-        
-        self.display_result(result_matrix)
-        # Print matrix_values dimensions for debugging
-        print("Matrix Values Dimensions:", len(matrix_values), len(matrix_values[0]))
-
-        try:
-            matrix = MatriX(len(matrix_values), len(matrix_values[0]), matrix_values)
-        except Exception as e:
-            print("Error creating matrix:", e)
-            return
-        matrix_label = tk.Label(self.master, text="Matrix:")
+        matrix_window = tk.Toplevel(self.master)
+        matrix_window.title("Matrix Values")
+        matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
         matrix_label.pack()
-
-        matrix_text = "\n".join([" ".join(map(str, row)) for row in matrix_values])
-        matrix_text_widget = tk.Label(self.master, text=matrix_text)
-        matrix_text_widget.pack()'''
+        
 
 
-    def display_result(self, result_matrix):
-        """displays the result matrix in a label
-
-        Args:
-            result_matrix (list): the list of list of matricies
-        """
-        formatted_matrix = "\n".join([" ".join(map(str, row)) for row in result_matrix])
-        self.result_label.config(text=f'Result:\n{formatted_matrix}')
-
+# if __name__ == "__main__":
+#     main()

@@ -52,6 +52,28 @@ class Calculator:
             self.button_frame.grid_rowconfigure(i, weight=1)
             self.button_frame.grid_columnconfigure(i, weight=1)
         
+        show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
+        show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
+        self.buttons.append(show_matrix_button)
+
+    def show_matrix_values(self):
+        matrix_values = []
+
+        for row_entries in self.matrix_operations_app.matrix_entries:
+            row_values = []
+            for entry in row_entries:
+                value = entry.get()
+                row_values.append(value)
+            matrix_values.append(row_values)
+
+        matrix_text = "\n".join([" ".join(row) for row in matrix_values])
+
+        matrix_window = tk.Toplevel(self.master)
+        matrix_window.title("Matrix Values")
+        matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
+        matrix_label.pack()
+            
+        
 
     def advance_calculator(self):
         adv_calc_window = tk.Toplevel(self.master)
@@ -99,6 +121,10 @@ class Calculator:
 
 
 class Advance_calculator(Calculator):
+    def __init__(self, master):
+        super().__init__(master)
+        self.matrix_operations_app = None 
+
     def create_buttons(self):
         super().create_buttons()
 
@@ -143,11 +169,16 @@ class Advance_calculator(Calculator):
         diff_eq_app = DifferentialEquationSolver(diff_eq_window)
 
     def open_matrix_view(self):
-        if not hasattr(self, "matrix_operations_app"):
+        if self.matrix_operations_app is None or not self.matrix_operations_app.master.winfo_exists():
             matrix_operation_window = tk.Toplevel(self.master)
-            self.matrix_operations_app = Matrix_Operations(matrix_operation_window)   
+            self.matrix_operations_app = Matrix_Operations(matrix_operation_window)
         else:
             self.matrix_operations_app.master.lift()
+        # if not hasattr(self, "matrix_operations_app"):
+        #     matrix_operation_window = tk.Toplevel(self.master)
+        #     self.matrix_operations_app = Matrix_Operations(matrix_operation_window)   
+        # else:
+        #     self.matrix_operations_app.master.lift()
        
     def clear_matrix_entries(self):
         if hasattr(self, "matrix_operations_app"):
@@ -284,8 +315,42 @@ class Advance_calculator(Calculator):
         elif text == "Linear Algebra":
             self.open_equation_solver()
 
+    def display_matrix_result(self, result_matrix):
+        result_window = tk.Toplevel(self.master)
+        result_window.title("Matrix Result")
 
+        result_label = tk.Label(result_window, text="Result Matrix:", font=("Helvetica", 12))
+        result_label.pack()
 
+        # Display the result matrix using labels
+        rows = len(result_matrix)
+        cols = len(result_matrix[0])
+
+        for i in range(rows):
+            row_values = [str(result_matrix[i][j]) for j in range(cols)]
+            row_label = tk.Label(result_window, text=" ".join(row_values), font=("Helvetica", 12))
+            row_label.pack()
+        
+    def show_matrix_values(self):
+        matrix_values = []
+
+        for row_entries in self.matrix_operations_app.matrix_entries:
+            row_values = []
+            for entry in row_entries:
+                value = entry.get()
+                row_values.append(value)
+            matrix_values.append(row_values)
+
+        matrix_text = " \n".join([" \n ".join(row) for row in matrix_values])
+
+        matrix_window = tk.Toplevel(self.master)
+        matrix_window.title("Matrix Values")
+        matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
+        matrix_label.pack()
+
+        show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
+        show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
+        self.buttons.append(show_matrix_button)
 def main():
     root = tk.Tk()
     app = Advance_calculator(root)  # Create an instance of Advance_calculator
