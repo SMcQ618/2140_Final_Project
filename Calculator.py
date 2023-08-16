@@ -284,7 +284,8 @@ class Advance_calculator(Calculator):
         elif text == "Linear Algebra":
             self.open_equation_solver()
 
-    
+
+
 def main():
     root = tk.Tk()
     app = Advance_calculator(root)  # Create an instance of Advance_calculator

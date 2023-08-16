@@ -39,6 +39,9 @@ class Matrix_Operations:
 
         evaluate_button = tk.Button(self.master, text="Evaluate Matrix", command=self.evaluate_matrix)
         evaluate_button.pack()
+
+        self.matrix_label = tk.Label(self.master, text="", font=("Helvetica", 12))
+        self.matrix_label.pack()
     
     def create_matrix_entries(self):
         """Creates the entries for the matrix that the user puts in"""
@@ -50,7 +53,7 @@ class Matrix_Operations:
         if rows_value and cols_value:
             rows = int(rows_value)
             cols = int(cols_value)
-
+            
             for i in range(rows):
                 row_entries = []
                 for j in range(cols):
@@ -86,6 +89,19 @@ class Matrix_Operations:
         except ValueError:
             self.result_label.config(text="Invalid input. Please enter valid integer values.")
 
+
+    def update_matrix_label(self):
+        matrix_values = []
+
+        for row_entries in self.matrix_entries:
+            row_values = []
+            for entry in row_entries:
+                value = entry.get()
+                row_values.append(value)
+            matrix_values.append(row_values)
+
+        matrix_text = "\n".join([" ".join(row) for row in matrix_values])
+        self.matrix_label.config(text=matrix_text)
 
     def evaluate_matrix(self):
         # create a list to store matrix values entered by the user
@@ -129,6 +145,7 @@ class Matrix_Operations:
             result_matrix = matrix.reduced_row_echelon_form()
 
         self.display_result(result_matrix)
+        self.update_matrix_label()
 
     '''def evaluate_matrix(self):
     # create a list to store matrix values entered by the user
