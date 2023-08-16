@@ -14,7 +14,10 @@ class Matrix:
         #want the user to be able to specify the number of rows and colums
         self.rows = rows
         self.cols = cols
-        self.matrix = np.array(matrix)
+        if matrix is None:
+            self.matrix = np.zeros((rows, cols))
+        else:
+            self.matrix = np.array(matrix)
 
     def select_mode(self, mode):
         self.mode = mode
@@ -30,45 +33,44 @@ class Matrix:
         print('9. RREF')
         choice = input('Enter your choice: ')
         if choice == '1':
-            Matrix.input_matrix(self)
+            self.input_matrix(self)
             self.display_matrx()
         elif choice == '2':
-            Matrix.input_matrix(self)
+            self.input_matrix(self)
             other_matrix = Matrix.input_matrix()
-            Matrix.add_matrx(self, other_matrix)
+            self.add_matrx(self, other_matrix)
             self.display_matrx()
         elif choice == '3':
-            Matrix.input_matrix(self)
-            other_matrix = Matrix.input_matrix()
-            Matrix.matrix_multiply(self, other_matrix)
+            self.input_matrix(self)
+            other_matrix = self.input_matrix()
+            self.matrix_multiply(self, other_matrix)
             self.display_matrx()
         elif choice == '4':
-            Matrix.input_matrix(self)
-            Matrix.transpose(self)
+            self.input_matrix(self)
+            self.transpose(self)
             self.display_
         elif choice == '5':
-            Matrix.input_matrix(self)
-            Matrix.switch(self)
+            self.input_matrix(self)
+            self.switch(self)
             self.display_matrx()
         elif choice == '6':
-            Matrix.input_matrix(self)
-            Matrix.scale_row(self)
+            self.input_matrix(self)
+            self.scale_row(self)
             self.display_matrx()
         elif choice == '7':
-            Matrix.input_matrix(self)
-            Matrix.add_scaled_column(self)
+            self.input_matrix(self)
+            self.add_scaled_column(self)
             self.display_matrx()
         elif choice == '8':
-            Matrix.input_matrix(self)
-            Matrix.ref(self)
+            self.input_matrix(self)
+            self.ref(self)
             self.display_matrx()
         elif choice == '9':
-            Matrix.input_matrix(self)
-            Matrix.rref(self)
+            self.input_matrix(self)
+            self.rref(self)
             self.display_matrx()
         else:
             print('Invalid input')
-
 
     def input_matrix(self):
         """Have the user be able to input values for the matrix
@@ -79,10 +81,10 @@ class Matrix:
 
     def display_matrx(self):
         """The display function of the matrix"""
-        print('Matrix')
+        print('Matrix:')
         print(self.matrix)
 
-    def add_matrx(self, other_matrix):
+    def add_matrix(self, other_matrix):
         """Add one matrix to another
 
         Args:
@@ -99,7 +101,7 @@ class Matrix:
 
         #before made it that I had to iterate.
         result_matrix = self.matrix + other_matrix.matrix
-        return Matrix(result_matrix)
+        return Matrix(self.rows, self.cols, result_matrix)
     
     def matrix_multiply(self, other_matrix):
         """Multiply a matrix by anotehr one
@@ -114,7 +116,7 @@ class Matrix:
             raise ValueError('Number of columns in first does not match second rows')
         
         result_matrix = np.dot(self.matrix, other_matrix.matrix)
-        return Matrix(result_matrix)
+        return Matrix(self.rows, other_matrix, result_matrix)
 
     def det(self):
         """Determine the determinant of the matrix'''
@@ -141,6 +143,8 @@ class Matrix:
             row (int): Index of teh row
             scalar (float): The scalar value which to scale the row
         """
+        if not (0 <= row < self.rows):
+            raise ValueError("Invalid row index")
         self.matrix[row] *= scalar
 
     def add_scaled_row(self, source_row, target_row, scalar):
@@ -151,6 +155,8 @@ class Matrix:
             target_row (int): Index of the row to which the scaled row will be added.
             scalar (float): The scalar value by which to scale the source row before adding.
         """
+        if not (0 <= source_row < self.rows and 0 <= target_row < self.rows):
+            raise ValueError("Invalid row indices")
         self.matrix[target_row] += scalar * self.matrix[source_row]
      
     #RREF use sympy
