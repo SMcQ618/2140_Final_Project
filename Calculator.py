@@ -8,7 +8,6 @@ from EquationSolver import EquationSolver
 from DifferentialEquationSolver import DifferentialEquationSolver
 
 
-
 class Calculator:
     def __init__(self, master):
         self.master = master
@@ -77,6 +76,10 @@ class Calculator:
             except:
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
+
+            # Clear matrix entries after an operation
+            if hasattr(self, "matrix_operations_app"):
+                self.matrix_operations_app.clear_matrix_entries()
         elif text == "Clear":
             current = self.equation.get()
             self.equation.delete(0, tk.END)
@@ -100,7 +103,7 @@ class Advance_calculator(Calculator):
         super().create_buttons()
 
         advanced_buttons = [
-            ('sqrt', 1, 5), ('^2', 2, 5), ('^3', 3, 5), ('1/x', 4, 5),
+             ('sqrt', 1, 5), ('^2', 2, 5), ('^3', 3, 5), ('1/x', 4, 5),
             ('sin', 1, 6), ('cos', 2, 6), ('tan', 3, 6), ('log', 4, 6),
             ('(', 1, 7), (')', 2, 7), ('π', 3, 7), ('e', 4, 7),
             ('Matrix', 1, 8), ('Laplace', 2, 8)
@@ -112,34 +115,44 @@ class Advance_calculator(Calculator):
             button.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
             button.config(command=lambda b=button: self.on_advanced_button_click(b))
             self.buttons.append(button)
-        matrix_operations_button = tk.Button(self.button_frame, text="M_Operations", width=10, command=self.open_matrix_view)
-        matrix_operations_button.grid(row=3, column=8, columnspan=2, padx=5, pady=5)
+        
+        matrix_operations_button = tk.Button(self.button_frame, text="Matrix", width=10, command=self.open_matrix_view)
+        matrix_operations_button.grid(row=3, column=8, columnspan=2, padx=5, pady=5, sticky="nsew")
         
         #creates buttons for lapalce view
         laplace_transforms_button = tk.Button(self.button_frame, text="Transforms", width = 10, command=self.open_laplace_view)
-        laplace_transforms_button.grid(row=4, column=8, columnspan=2, padx=5, pady=5)
+        laplace_transforms_button.grid(row=4, column=8, columnspan=2, padx=5, pady=5, sticky="nsew")
         
-        #create methods for advance for linear
-        equation_solver_button = tk.Button(self.button_frame, text="Equation Solver", width=10, command=self.open_equation_solver)
-        equation_solver_button.grid(row=1, column=8, columnspan=2, padx=5, pady=5)  # Adjust the row and column as needed
+        equation_solver_button = tk.Button(self.button_frame, text="Lin EQ Solver", width=10, command=self.open_equation_solver)
+        equation_solver_button.grid(row=1, column=9, columnspan=2, padx=5, pady=5, sticky="nsew")  # Adjust the row and column as needed
 
         #create methods for advance for linear
         diff_eq_button = tk.Button(self.button_frame, text="Diff EQ", width=10, command=self.open_diff_eq_solver)
-        diff_eq_button.grid(row=4, column=9, columnspan=2, padx=5, pady=5)  # Adjust the row and column as needed
+        diff_eq_button.grid(row=4, column=10, columnspan=2, padx=5, pady=5, sticky="nsew")
     #@classmethod
     def open_equation_solver(self):
+        """where i call the linear equation window
+        """
         equation_solver_window = tk.Toplevel(self.master)
         equation_solver_app = EquationSolver(equation_solver_window)
 
-    # Inside the Advance_calculator class
     def open_diff_eq_solver(self):
+        """where the diiferential eqution window is called
+        """
         diff_eq_window = tk.Toplevel(self.master)
         diff_eq_app = DifferentialEquationSolver(diff_eq_window)
 
-
     def open_matrix_view(self):
-        matrix_operation_window = tk.Toplevel(self.master)
-        matrix_operations_app = Matrix_Operations(matrix_operation_window)   
+        if not hasattr(self, "matrix_operations_app"):
+            matrix_operation_window = tk.Toplevel(self.master)
+            self.matrix_operations_app = Matrix_Operations(matrix_operation_window)   
+        else:
+            self.matrix_operations_app.master.lift()
+       
+    def clear_matrix_entries(self):
+        if hasattr(self, "matrix_operations_app"):
+            self.matrix_operations_app.create_matrix_entries()
+    
 
     def on_advanced_button_click(self, button):
         text = button.cget("text")
@@ -266,33 +279,12 @@ class Advance_calculator(Calculator):
             self.open_matrix_view()
         elif text == "Laplace":
             self.open_laplace_view()
+        elif text == "Diff EQ":
+            self.open_diff_eq_solver()
+        elif text == "Linear Algebra":
+            self.open_equation_solver()
 
-'''def main():
-    root = tk.Tk()
-    app = Calculator(root)
-
-    menubar = tk.Menu(root)
-    root.config(menu=menubar)
-
-    #Create a "File" menu with an "Exit" option
-    file_menu = tk.Menu(menubar, tearoff=0)
-    file_menu.add_command(label="Exit", command=root.destroy)
-    menubar.add_cascade(label="File", menu=file_menu)
-
-    #creates the "view" menu look with the different option
-    view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator)
-    view_menu.add_command(label="Matrix Calculator", command=app.advance_calculator)  # Add this line
-    view_menu.add_command(label="Laplace", command=app.open_laplace_view)
-    # Inside the main method where you create the "View" menu
-    view_menu.add_command(label="Equation Solver", command=app.open_equation_solver)
-
-    menubar.add_cascade(label="View", menu=view_menu)
-
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()'''
+    
 def main():
     root = tk.Tk()
     app = Advance_calculator(root)  # Create an instance of Advance_calculator
