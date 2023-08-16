@@ -3,8 +3,8 @@ import math
 import tkinter.messagebox
  
 root = Tk()
-root.title("Scientific Calculator")
-root.configure(background = 'gray')
+root.title(" Calculator")
+root.configure(background = 'white')
 root.resizable(width=False, height=False)
 root.geometry("450x568+450+90")
 calc = Frame(root)
@@ -208,21 +208,21 @@ for j in range(2,5):
         i+=1
        
 btnClear = Button(calc, text=chr(67),width=6,
-                  height=2,bg='light blue',
+                  height=2,bg='Green',
                   font=('Helvetica',20,'bold')
                   ,bd=4, command=added_value.clearScreen
                  ).grid(row=1, column= 0, pady = 1)
  
 btnAllClear = Button(calc, text=chr(67)+chr(69),
                      width=6, height=2,
-                     bg='light blue',
+                     bg='blue',
                      font=('Helvetica',20,'bold'),
                      bd=4,
                      command=added_value.clearAllEntry
                     ).grid(row=1, column= 1, pady = 1)
  
 btnsq = Button(calc, text="\u221A",width=6, height=2,
-               bg='light blue', font=('Helvetica',
+               bg='Green', font=('Helvetica',
                                        20,'bold'),
                bd=4,command=added_value.squared
               ).grid(row=1, column= 2, pady = 1)
