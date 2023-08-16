@@ -3,6 +3,9 @@ from tkinter import messagebox
 import math
 from matriX import MatriX
 from Matrix_operations import Matrix_Operations
+from Laplace_ import Laplace_transforms
+from laplaceG import LaplaceTrsG
+
 
 class Calculator:
     def __init__(self, master):
@@ -47,10 +50,12 @@ class Calculator:
         for i in range(5):
             self.button_frame.grid_rowconfigure(i, weight=1)
             self.button_frame.grid_columnconfigure(i, weight=1)
+        
+
     def advance_calculator(self):
         adv_calc_window = tk.Toplevel(self.master)
         adv_oper_app = Advance_calculator(adv_calc_window) 
-
+    
     #this is for mathcing the back arrow, clear, and clear all
     def on_button_click(self, button):
         text = button.cget("text")
@@ -92,7 +97,7 @@ class Advance_calculator(Calculator):
             ('sqrt', 1, 5), ('^2', 2, 5), ('^3', 3, 5), ('1/x', 4, 5),
             ('sin', 1, 6), ('cos', 2, 6), ('tan', 3, 6), ('log', 4, 6),
             ('(', 1, 7), (')', 2, 7), ('π', 3, 7), ('e', 4, 7),
-            ('Matrix', 5, 7)
+            ('Matrix', 1, 8), ('Laplace', 2, 8)
         ]
 
         for button_info in advanced_buttons:
@@ -103,6 +108,14 @@ class Advance_calculator(Calculator):
             self.buttons.append(button)
         matrix_operations_button = tk.Button(self.button_frame, text="Matrix Operations", width=15, command=self.open_matrix_view)
         matrix_operations_button.grid(row=4, column=6, columnspan=2, padx=5, pady=5)
+        
+        #creates buttons for lapalce view
+        laplace_transforms_button = tk.Button(self.button_frame, text='Laplace Transforms', width = 10, command=self.open_laplace_view)
+        laplace_transforms_button.grid(row=4, column=8, columnspan=2, padx=5, pady=5)
+        
+    def open_laplace_view(self):
+        laplace_window = tk.Toplevel(self.master)
+        laplace_app = LaplaceTrsG(laplace_window)
     
     def open_matrix_view(self):
         matrix_operation_window = tk.Toplevel(self.master)
@@ -231,7 +244,55 @@ class Advance_calculator(Calculator):
             self.equation.insert(tk.END, str(math.e))
         elif text == "Matrix":
             self.open_matrix_view()
+        elif text == "Laplace":
+            self.open_laplace_view()
 
+# class LaplaceTrsG:
+#     """Creates a tkinter aplication for Laplace
+#     """
+#     def __init__(self, master):
+#         self.master = master
+#         self.master.title('Laplace Transforms')
+
+#         self.equation_label = tk.Label(master, text="Equation:")
+#         self.equation_label.pack()
+
+#         self.equation_entry = tk.Entry(master)
+#         self.equation_entry.pack()
+
+#         self.calculate_button = tk.Button(master, text="Calculate Transform", command=self.calculate_transform)
+#         self.calculate_button.pack()
+
+#         self.result_label = tk.Label(master, text="", font=("Helvetica", 12))
+#         self.result_label.pack()
+
+#         self.create_ui()
+
+#     def create_ui(self):
+#         """Creating the parts and labels for Laplace
+#         """
+#         self.equation_label = tk.Label(self.master, text="Enter the equation:")
+#         self.equation_label.pack()
+
+#         self.equation_entry = tk.Entry(self.master)
+#         self.equation_entry.pack()
+
+#         self.calculate_button = tk.Button(self.master, text="Calculate Laplace Transform", command=self.calculate_laplace)
+#         self.calculate_button.pack()
+
+#         self.result_label = tk.Label(self.master, text="", font=("Helvetica", 12))
+#         self.result_label.pack()
+    
+#     def calculate_laplace(self):
+#         equation_str = self.equation_entry.get()
+#         calculator = Laplace_transforms()
+#         calculator.input_equation(equation_str)
+
+#         result_type, result = calculator.calculate_transform()
+#         self.display_result(result_type, result)
+
+#     def display_result(self, result_type, result):
+#         self.result_label.config(text=f'{result_type}\n{result}')
 
 def main():
     root = tk.Tk()
@@ -249,6 +310,7 @@ def main():
     view_menu = tk.Menu(menubar, tearoff=0)
     view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator)
     view_menu.add_command(label="Matrix Calculator", command=app.advance_calculator)  # Add this line
+    view_menu.add_command(label="Laplace", command=app.advance_calculator)
     menubar.add_cascade(label="View", menu=view_menu)
 
     root.mainloop()
@@ -257,5 +319,5 @@ if __name__ == "__main__":
     main()
 
 
-print('s/this is for git')
-print(345)
+#print('s/this is for git')
+#print(345)
