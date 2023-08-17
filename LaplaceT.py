@@ -50,13 +50,14 @@ class LaplaceTransforms:
 
     def calculate_laplace(self, equation):
         """Calculates the standard laplace transform
-
         Args:
             equation (Int): The expression is a mix of ints and variables
-
         Returns:
             String: Returns a string formatted of the calculated expression
         """
+        if not equation:
+            return "No equation was inputted"
+        
         s, t = sp.symbols('s t')
         #need to havea way to recognize s and t
         expr = sp.sympify(equation)
@@ -68,7 +69,6 @@ class LaplaceTransforms:
         """Calculates the inverse laplace transform
         Args:
             equation (Int): the equation is not a string but a mix of ints and variables
-
         Returns:
             str: Returns the transform as a string on a pop-up window"""
         s, t = sp.symbols('s t')

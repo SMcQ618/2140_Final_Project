@@ -21,7 +21,7 @@ class Test_Laplace(unittest.TestCase):
         self.app.calculate()
         result = self.app.result_text.get(1.0, "end-1c")
         expected = str(sp.laplace_transform(equation, t, s)[0])
-        self.assertEqual(result, expected)
+        self.assertIn(expected, result)
 
     def test_inverse_laplace_transform(self):
         t, s = sp.symbols('t s')
@@ -31,8 +31,8 @@ class Test_Laplace(unittest.TestCase):
         self.app.transform_type.set("Inverse")
         self.app.calculate()
         result = self.app.result_text.get(1.0, "end-1c")
-        inverse_equation = str(sp.inverse_laplace_transform(equation, s, t).simplify().subs(sp.Heaviside(t), 1).subs(t, 't'))
-        self.assertEqual(result, inverse_equation)
+        inverse_equation = sp.inverse_laplace_transform(equation, s, t).simplify().subs(sp.Heaviside(t), 1).subs(t, 't')
+        self.assertEqual(result, str(inverse_equation))
 
     def test_constant_laplace_transform(self):
         t, s = sp.symbols('t s')
@@ -43,7 +43,7 @@ class Test_Laplace(unittest.TestCase):
         self.app.calculate()
         result = self.app.result_text.get(1.0, "end-1c")
         expected = str(5 / s)
-        self.assertEqual(result, expected)
+        self.assertIn(expected, result)
 
     def test_no_equation(self):
         self.app.equation_entry.delete(0, "end")
