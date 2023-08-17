@@ -4,6 +4,7 @@ from tkinter import Tk
 from LaplaceT import LaplaceTransforms
 
 class Test_Laplace(unittest.TestCase):
+    """Tests for making sure Laplace works correctly"""
 
     def setUp(self):
         self.root = Tk()
