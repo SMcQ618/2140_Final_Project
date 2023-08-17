@@ -10,6 +10,7 @@ from FracG import FractionGUI
 
 
 class Calculator:
+    """Represents the Calculator with basic funcitons"""
     def __init__(self, master):
         self.master = master
         self.master.title("Calculator")
