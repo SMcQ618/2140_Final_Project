@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import messagebox
 import math
-from matriX import MatriX
+#from matriX import MatriX
 from Matrix_operations import Matrix_Operations
 from laplaceG import LaplaceTrsG
 from EquationSolver import EquationSolver
 from DifferentialEquationSolver import DifferentialEquationSolver
+from FracG import FractionGUI
 
 
 class Calculator:
@@ -30,6 +31,7 @@ class Calculator:
 
     #create the buttons for the numbers
     def create_buttons(self):
+        """Creates the look for the calculator"""
         buttons = [
             ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3), ('⌫', 1, 4),
             ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3), ('+', 2, 4),
@@ -47,16 +49,17 @@ class Calculator:
             button.config(command=lambda b=button: self.on_button_click(b))
             self.buttons.append(button)
 
-        #fix teh row and column weights for resizing
+        #fix the row and column weights for resizing
         for i in range(5):
             self.button_frame.grid_rowconfigure(i, weight=1)
             self.button_frame.grid_columnconfigure(i, weight=1)
         
-        show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
-        show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
-        self.buttons.append(show_matrix_button)
+        # show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
+        # show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
+        # self.buttons.append(show_matrix_button)
 
     def show_matrix_values(self):
+        """Display the matrix values in a new window"""
         matrix_values = []
 
         for row_entries in self.matrix_operations_app.matrix_entries:
@@ -72,19 +75,25 @@ class Calculator:
         matrix_window.title("Matrix Values")
         matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
         matrix_label.pack()
-            
-        
-
+     
     def advance_calculator(self):
+        """Opns a advance calc window"""
         adv_calc_window = tk.Toplevel(self.master)
         adv_oper_app = Advance_calculator(adv_calc_window) 
 
     def open_laplace_view(self):
+        """Opens a laplace window"""
         laplace_window = tk.Toplevel(self.master)
         laplace_app = LaplaceTrsG(laplace_window)
 
+    def open_fraction_solver(self):
+        """Opens fraction window"""
+        fraction_window = tk.Toplevel(self.master)
+        frac_app = FractionGUI(fraction_window)
+
     #this is for mathcing the back arrow, clear, and clear all
     def on_button_click(self, button):
+        """when a button is clicked what to do"""
         text = button.cget("text")
 
         if text == "⌫":
@@ -119,8 +128,12 @@ class Calculator:
             self.equation.delete(0, tk.END)
             self.equation.insert(0, current + text)
 
-
 class Advance_calculator(Calculator):
+    """Contains all the operations for the more advanced Calculator
+
+    Args:
+        Calculator (Class): Inherits from the main calculator with basic operations
+    """
     def __init__(self, master):
         super().__init__(master)
         self.matrix_operations_app = None 
@@ -144,17 +157,21 @@ class Advance_calculator(Calculator):
         
         matrix_operations_button = tk.Button(self.button_frame, text="Matrix", width=10, command=self.open_matrix_view)
         matrix_operations_button.grid(row=3, column=8, columnspan=2, padx=5, pady=5, sticky="nsew")
-        
+        self.buttons.append(matrix_operations_button)
+
         #creates buttons for lapalce view
         laplace_transforms_button = tk.Button(self.button_frame, text="Transforms", width = 10, command=self.open_laplace_view)
         laplace_transforms_button.grid(row=4, column=8, columnspan=2, padx=5, pady=5, sticky="nsew")
         
-        equation_solver_button = tk.Button(self.button_frame, text="Lin EQ Solver", width=10, command=self.open_equation_solver)
+        equation_solver_button = tk.Button(self.button_frame, text="LinEQ Solver", width=10, command=self.open_equation_solver)
         equation_solver_button.grid(row=1, column=9, columnspan=2, padx=5, pady=5, sticky="nsew")  # Adjust the row and column as needed
 
         #create methods for advance for linear
         diff_eq_button = tk.Button(self.button_frame, text="Diff EQ", width=10, command=self.open_diff_eq_solver)
         diff_eq_button.grid(row=4, column=10, columnspan=2, padx=5, pady=5, sticky="nsew")
+
+        fraction_button = tk.Button(self.button_frame, text="Fractions", width= 10, command=self.open_fraction_solver)
+        fraction_button.grid(row=2, column= 8, columnspan=2, padx=5, pady=5, sticky="nsew")
     #@classmethod
     def open_equation_solver(self):
         """where i call the linear equation window
@@ -169,22 +186,21 @@ class Advance_calculator(Calculator):
         diff_eq_app = DifferentialEquationSolver(diff_eq_window)
 
     def open_matrix_view(self):
+        """Opens the matrix window"""
         if self.matrix_operations_app is None or not self.matrix_operations_app.master.winfo_exists():
             matrix_operation_window = tk.Toplevel(self.master)
             self.matrix_operations_app = Matrix_Operations(matrix_operation_window)
         else:
             self.matrix_operations_app.master.lift()
-        # if not hasattr(self, "matrix_operations_app"):
-        #     matrix_operation_window = tk.Toplevel(self.master)
-        #     self.matrix_operations_app = Matrix_Operations(matrix_operation_window)   
-        # else:
-        #     self.matrix_operations_app.master.lift()
-       
+
+    def open_laplace_view(self):
+        laplace_window = tk.Toplevel(self.master)
+        laplace_app = LaplaceTrsG(laplace_window) 
+
     def clear_matrix_entries(self):
         if hasattr(self, "matrix_operations_app"):
             self.matrix_operations_app.create_matrix_entries()
     
-
     def on_advanced_button_click(self, button):
         text = button.cget("text")
         current = self.equation.get()
@@ -222,7 +238,6 @@ class Advance_calculator(Calculator):
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
         elif text == "sin":
-            # ... handle sine calculation ...
             try:
                 radians = eval(current)
                 result = math.sin(radians)
@@ -232,7 +247,6 @@ class Advance_calculator(Calculator):
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
         elif text == "cos":
-            # ... handle cosine calculation ...
             try:
                 radians = eval(current)
                 result = math.cos(radians)
@@ -250,7 +264,6 @@ class Advance_calculator(Calculator):
             except:
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
-            # ... handle tangent calculation ...
         elif text == "sin⁻¹":
             try:
                 value = eval(current)
@@ -282,7 +295,6 @@ class Advance_calculator(Calculator):
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
         elif text == "log":
-            # ... handle logarithm calculation ...
             try:
                 radians = eval(current)
                 result = math.log(radians)
@@ -292,19 +304,15 @@ class Advance_calculator(Calculator):
                 self.equation.delete(0, tk.END)
                 self.equation.insert(0, "Error")
         elif text == "(":
-            # ... handle opening parenthesis ...
+            
             self.equation.insert(tk.END, "(")
 
         elif text == ")":
-            # ... handle closing parenthesis ...
             self.equation.insert(tk.END, ")")
 
         elif text == "π":
-            # ... handle pi constant ...
             self.equation.insert(tk.END, str(math.pi))
-
         elif text == "e":
-            # ... handle Euler's number 
             self.equation.insert(tk.END, str(math.e))
         elif text == "Matrix":
             self.open_matrix_view()
@@ -314,22 +322,29 @@ class Advance_calculator(Calculator):
             self.open_diff_eq_solver()
         elif text == "Linear Algebra":
             self.open_equation_solver()
+        elif text == "Fractions":
+            self.open_fraction_solver()
 
     def display_matrix_result(self, result_matrix):
         result_window = tk.Toplevel(self.master)
         result_window.title("Matrix Result")
 
-        result_label = tk.Label(result_window, text="Result Matrix:", font=("Helvetica", 12))
+        result_label = tk.Label(result_window, text="Result:", font=("Helvetica", 12))
         result_label.pack()
 
+        if isinstance(result_matrix, tuple):
+            result_type, result = result_matrix
+            result_label = tk.Label(result_window, text=f"{result_type}\n{result}", font=("Helvetica", 12))
+            result_label.pack()
         # Display the result matrix using labels
-        rows = len(result_matrix)
-        cols = len(result_matrix[0])
+        else:
+            rows = len(result_matrix)
+            cols = len(result_matrix[0])
 
-        for i in range(rows):
-            row_values = [str(result_matrix[i][j]) for j in range(cols)]
-            row_label = tk.Label(result_window, text=" ".join(row_values), font=("Helvetica", 12))
-            row_label.pack()
+            for i in range(rows):
+                row_values = [str(result_matrix[i][j]) for j in range(cols)]
+                row_label = tk.Label(result_window, text=" ".join(row_values), font=("Helvetica", 12))
+                row_label.pack()
         
     def show_matrix_values(self):
         matrix_values = []
@@ -341,16 +356,18 @@ class Advance_calculator(Calculator):
                 row_values.append(value)
             matrix_values.append(row_values)
 
-        matrix_text = " \n".join([" \n ".join(row) for row in matrix_values])
+        matrix_text = " \n".join([" ".join(row) for row in matrix_values])
 
         matrix_window = tk.Toplevel(self.master)
         matrix_window.title("Matrix Values")
         matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
         matrix_label.pack()
 
-        show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
-        show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
-        self.buttons.append(show_matrix_button)
+        if not hasattr(self, "show_matrix_button"):
+            self.show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
+            self.show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
+            self.buttons.append(self.show_matrix_button)
+
 def main():
     root = tk.Tk()
     app = Advance_calculator(root)  # Create an instance of Advance_calculator
@@ -365,7 +382,7 @@ def main():
 
     # Create the "View" menu with the different options
     view_menu = tk.Menu(menubar, tearoff=0)
-    view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator) #for the adv
+    #view_menu.add_command(label="Advanced Calculator", command=app.advance_calculator) #for the adv
     view_menu.add_command(label="Matrix Calculator", command=app.open_matrix_view) #for the matrix
     view_menu.add_command(label="Laplace", command=app.open_laplace_view) #for the laplace
     view_menu.add_command(label="Lin_Alg Solver", command=app.open_equation_solver)  # linear
