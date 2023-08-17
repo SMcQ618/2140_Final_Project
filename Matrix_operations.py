@@ -1,157 +1,56 @@
 import tkinter as tk
-from tkinter import messagebox
-from matriX import MatriX
+import tkinter.messagebox as messagebox
+from tkinter.simpledialog import askinteger
+from matriX import MatriX  
 
 class Matrix_Operations:
-    def __init__(self, master) -> None:
+    def __init__(self, master):
         self.master = master
         self.master.title("Matrix Operations")
 
-        self.rows_label = tk.Label(master, text="Rows:")
-        self.rows_label.pack()
-
-        self.rows_entry = tk.Entry(master)
-        self.rows_entry.pack()
-
-        self.cols_label = tk.Label(master, text="Columns:")
-        self.cols_label.pack()
-
-        self.cols_entry = tk.Entry(master)
-        self.cols_entry.pack()
+        self.matrix_entries = [] #this is for the first matrix
+        self.other_matrix_entries = [] #this will be for the second matrix for adding/mul
+        self.create_matrix_entries()
 
         self.create_buttons()
-        self.create_matrix_entries()
-        self.create_result_labels()
 
-    def create_buttons(self):
-        """Creates the buttons for the matrix operations"""
-        self.create_button = tk.Button(self.master, text='Create Matrix', command=self.create_matrix)
-        self.create_button.pack()
-
-        # Create a dropdown menu for selecting matrix operations
-        self.operation_var = tk.StringVar()
-        self.operation_var.set("Select an operation")
-        self.operation_menu = tk.OptionMenu(self.master, self.operation_var,
-                                            "Operation 1: Add", "Operation 2: Multiply",
-                                            "Operation 3: Determinant", "Operation 4: Transpose",
-                                            "Operation 5: REF", "Operation 6: RREF")
-        self.operation_menu.pack()
-
-        evaluate_button = tk.Button(self.master, text="Evaluate Matrix", command=self.evaluate_matrix)
-        evaluate_button.pack()
-
-        self.matrix_label = tk.Label(self.master, text="", font=("Helvetica", 12))
-        self.matrix_label.pack()
-        show_matrix_button = tk.Button(self.master,text="Show Matrix", command=self.show_matrix_values)
-        show_matrix_button.pack()
-    
     def create_matrix_entries(self):
-        """Creates the entries for the matrix that the user puts in"""
-        self.matrix_entries = []
-    
-        rows_value = self.rows_entry.get()
-        cols_value = self.cols_entry.get()
+        """create the matrix entries for user"""
+        rows = askinteger("Input", "Enter the number of rows:")
+        cols = askinteger("Input", "Enter the number of columns:")
 
-        if rows_value and cols_value:
-            rows = int(rows_value)
-            cols = int(cols_value)
-            
-            for i in range(rows):
-                row_entries = []
-                for j in range(cols):
-                    entry = tk.Entry(self.master)
-                    entry.pack()
-                    row_entries.append(entry)
-                self.matrix_entries.append(row_entries)
-        else:
-            messagebox.showerror("Invalid Input", "Please enter valid integer values for rows and columns.")
-            
-    
-    def create_result_labels(self):
-            self.result_label = tk.Label(self.master, text="", font=("Helvetica", 12))
-            self.result_label.pack()
-
-    def create_matrix(self):
-        try:
-            rows = int(self.rows_entry.get())
-            cols = int(self.cols_entry.get())
-
-            self.create_matrix_entries()
-            matrix_values = []
-
-            for _ in range(rows):
-                row_input = input(f"Enter values for row {_ + 1} separated by spaces: ")
-                row_values = [int(value) for value in row_input.split()]
-                matrix_values.append(row_values)
-
-            self.matrix = MatriX(rows, cols, matrix_values)
-            self.result_label.config(text="Matrix created successfully!")
-
-            self.update_matrix_label()
-        except ValueError:
-            self.result_label.config(text="Invalid input. Please enter valid integer values.")
-
-
-    def update_matrix_label(self):
-        matrix_values = []
-
-        for row_entries in self.matrix_entries:
-            row_values = []
-            for entry in row_entries:
-                value = entry.get()
-                row_values.append(value)
-            matrix_values.append(row_values)
-
-        matrix_text = "\n".join([" ".join(row) for row in matrix_values])
-        self.matrix_label.config(text=matrix_text)
-
-    def evaluate_matrix(self):
-        # create a list to store matrix values entered by the user
-        matrix_values = []
-
-        for entry_row in self.matrix_entries:
-            row_values = []
-            # Iterate through each entry in the row
-            for entry in entry_row:
-                value = entry.get()
-                # Convert empty or whitespace values to 0
-                if value.strip() == "":
-                    value = 0
-                # Convert the value to a floating-point number and add to the row
-                row_values.append(float(value))
-            # Add the row of values to the matrix_values list
-            matrix_values.append(row_values)
-
-        # Print matrix_values dimensions for debugging
-        print("Matrix Values Dimensions:", len(matrix_values), len(matrix_values[0]))
-
-        operation = self.operation_var.get()
-
-        try:
-            matrix = MatriX(len(matrix_values), len(matrix_values[0]), matrix_values)
-        except Exception as e:
-            print("Error creating matrix:", e)
+        if rows is None or cols is None:
             return
 
-        if operation == "Operation 1: Add":
-            result_matrix = matrix.add_matrix()
-        elif operation == "Operation 2: Multiply":
-            result_matrix = matrix.matrix_multiply()
-        elif operation == "Operation 3: Determinant":
-            result_matrix = matrix.det()
-        elif operation == "Operation 4: Transpose":
-            result_matrix = matrix.transpose()
-        elif operation == "Operation 5: REF":
-            result_matrix = matrix.row_echelon_form()
-        elif operation == "Operation 6: RREF":
-            result_matrix = matrix.reduced_row_echelon_form()
+        for i in range(rows):
+            row_frame = tk.Frame(self.master)
+            row_frame.pack()
 
-        self.display_result(result_matrix)
-        self.update_matrix_label()
+            row_entries = []
+            for j in range(cols):
+                entry = tk.Entry(row_frame)
+                entry.pack(side=tk.LEFT)
+                row_entries.append(entry)
+            self.matrix_entries.append(row_entries)
 
-    def show_matrix_values(self):
+    def create_buttons(self):
+        """create buttons or diff matrix operations"""
+        self.transpose_button = tk.Button(self.master, text="Transpose", command=self.transpose_matrix)
+        self.transpose_button.pack()
+
+        self.determinant_button = tk.Button(self.master, text="Determinant", command=self.determinant)
+        self.determinant_button.pack()
+
+        self.ref_button = tk.Button(self.master, text="REF", command=self.calc_ref)
+        self.ref_button.pack()
+
+        self.rref_button = tk.Button(self.master, text="RREF", command=self.calc_rref)
+        self.rref_button.pack()
+
+    
+    def transpose_matrix(self):
+        """Tranposes the matrix and updates the entry fields with the result"""
         matrix_values = []
-
         for row_entries in self.matrix_entries:
             row_values = []
             for entry in row_entries:
@@ -159,14 +58,81 @@ class Matrix_Operations:
                 row_values.append(value)
             matrix_values.append(row_values)
 
-        matrix_text = "\n".join([" ".join(row) for row in matrix_values])
+        transposed_matrix = [[matrix_values[j][i] for j in range(len(matrix_values))] for i in range(len(matrix_values[0]))]
 
-        matrix_window = tk.Toplevel(self.master)
-        matrix_window.title("Matrix Values")
-        matrix_label = tk.Label(matrix_window, text=matrix_text, font=("Helvetica", 12))
-        matrix_label.pack()
-        
+        for row_entries in self.matrix_entries:
+            for entry in row_entries:
+                entry.delete(0, tk.END)
+
+        for i in range(len(self.matrix_entries)):
+            for j in range(len(self.matrix_entries[0])):
+                entry = self.matrix_entries[i][j]
+                entry.insert(0, transposed_matrix[i][j])
+
+    def determinant(self):
+        matrix_value = self.get_matrix_values()
+
+        if matrix_value:
+            matrix = MatriX(len(matrix_value), len(matrix_value[0]), matrix_value)
+            determinant = matrix.det()
+            #this will create a pop-up window saying what the determinant is
+            determinant_popup = tk.Toplevel(self.master)
+            determinant_popup.title("Determinant")
+            #wanted the determinant to be its own window
+            determinant_label = tk.Label(determinant_popup, text=f"The determinant is {determinant}", font=("Helvetica", 12))
+            determinant_label.pack()
 
 
-# if __name__ == "__main__":
-#     main()
+    def calc_ref(self):
+        """Calculates the Row Echelon FOrm and displays teh results"""
+        matrix_values = self.get_matrix_values()
+
+        if matrix_values:
+            matrix = MatriX(len(matrix_values), len(matrix_values[0]), matrix_values)
+            ref_matrix = matrix.row_echelon_form()
+
+            self.update_matrix_entries_with_result(ref_matrix)
+    
+    def calc_rref(self):
+        """Calculates the reduced row echelon form and displays the result"""
+        matrix_values = self.get_matrix_values()
+
+        if matrix_values:
+            matrix = MatriX(len(matrix_values), len(matrix_values[0]), matrix_values)
+            rref_matrix = matrix.reduced_row_echelon_form()
+
+            self.update_matrix_entries_with_result(rref_matrix)
+
+    def update_matrix_entries_with_result(self, result_matrix):
+            """Updates the matrix entry fiesl with the result
+
+            Args:
+                result_matrix (list): the result is lists of lists that have different values
+            """
+            for i, row_entries in enumerate(self.matrix_entries):
+                for j, entry in enumerate(row_entries):
+                    entry.delete(0, tk.END)
+                    entry.insert(0, result_matrix.matrix[i, j])
+
+    def get_matrix_values(self):
+        """Retrieve matrix values from entry fields and check the input
+
+        Returns:
+            _type_: _description_
+        """
+        matrix_values = []
+        for row_entries in self.matrix_entries:
+            row_values = []
+            for entry in row_entries:
+                value = entry.get()
+                if value.strip() == "":
+                    messagebox.showerror("Invalid Input", "Please enter valid integer values for matrix entries.")
+                    return None
+                row_values.append(float(value))
+            matrix_values.append(row_values)
+        return matrix_values
+    
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Matrix_Operations(root)
+    root.mainloop()

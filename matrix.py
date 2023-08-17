@@ -3,7 +3,7 @@ import numpy as np
 #need to wrtie a method that uses
 class MatriX:
     """This is the matrix class for all the linear algebra"""
-    def __init__(self, rows, cols, matrix):
+    def __init__(self, rows, cols, matrix=None):
         """Initializing the MatrixOperations
 
         Args:
@@ -101,6 +101,7 @@ class MatriX:
 
         #before made it that I had to iterate.
         result_matrix = self.matrix + other_matrix.matrix
+        #create a new matrix instance with the result matrix
         return MatriX(self.rows, self.cols, result_matrix)
     
     def matrix_multiply(self, other_matrix):
@@ -123,9 +124,13 @@ class MatriX:
         """
         return np.linalg.det(self.matrix)
 
-    def transpose(self):
+    def transpose_numpy(self):
         """Be able to take a row and column and switch them"""
-        self.matrix = self.matrix.T
+        transposed_matrix = []
+        for j in range(self.cols):
+            transposed_row = [self.matrix[i][j] for i in range(self.rows)]
+            transposed_matrix.append(transposed_row)
+        return transposed_matrix
 
     def swap_rows(self, row1, row2):
         """Swaps two rows in the matrix
@@ -166,18 +171,24 @@ class MatriX:
         Returns:
             list: where a new matrix with ones in a consecutive order
         """
+        new_matrix = self.matrix.copy() 
+        #create a copy of the matrix
         for i in range(self.rows):
-            pivot = self.matrix[i, i]
+            pivot = new_matrix[i, i]
             if pivot == 0:
                 for j in range(i + 1, self.rows):
-                    if self.matrix[j, i] != 0:
-                        self.swap_rows(i,j)
+                    if new_matrix[j, i] != 0:
+                        new_matrix[[i, j]] = new_matrix[[j, i]]
+                        #essentially swapping the rows
                         break
-            pivot = self.matrix[i, i]
+            pivot = new_matrix[i, i]
             if pivot != 0:
-                self.matrix[i] /= pivot
+                new_matrix[i] /= pivot #divide the first entry by all the values
                 for k in range(i + 1, self.rows):
-                    self.matrix[k] -= self.matrix[k, i] * self.matrix[i] 
+                    new_matrix[k] -= new_matrix[k, i] * new_matrix[i]
+        #create a new martix instance with the modified inside
+        return MatriX(self.rows, self.cols, new_matrix)
+    
     
     #RREF
     def reduced_row_echelon_form(self):
@@ -186,10 +197,12 @@ class MatriX:
         Returns:
             list: a matrix where there is ones in a consecutive order
         """
-        self.row_echelon_form()
+        new_matrix = self.row_echelon_form().matrix.copy()  # Get the matrix in row echelon form and make a copy
         for i in reversed(range(self.rows)):
-            pivot_col = np.argmax(self.matrix[i] != 0)
+            pivot_col = np.argmax(new_matrix[i] != 0)
             if pivot_col < self.cols:
                 for j in reversed(range(i)):
-                    self.matrix[j] -= self.matrix[j, pivot_col] * self.matrix[i]
+                    new_matrix[j] -= new_matrix[j, pivot_col] * new_matrix[i]
+        # Create a new MatriX instance with the modified matrix and return it
+        return MatriX(self.rows, self.cols, new_matrix)
     
