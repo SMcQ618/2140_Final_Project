@@ -53,10 +53,6 @@ class Calculator:
         for i in range(5):
             self.button_frame.grid_rowconfigure(i, weight=1)
             self.button_frame.grid_columnconfigure(i, weight=1)
-        
-        # show_matrix_button = tk.Button(self.master, text="Show Matrix", command=self.show_matrix_values)
-        # show_matrix_button.grid(row=5, column=4, padx=5, pady=5, sticky="nsew")
-        # self.buttons.append(show_matrix_button)
 
     def show_matrix_values(self):
         """Display the matrix values in a new window"""
