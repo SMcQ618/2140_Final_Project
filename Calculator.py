@@ -3,7 +3,7 @@ from tkinter import messagebox
 import math
 #from matriX import MatriX
 from Matrix_operations import Matrix_Operations
-from laplaceG import LaplaceTrsG
+from LaplaceT import LaplaceTransforms
 from EquationSolver import EquationSolver
 from DifferentialEquationSolver import DifferentialEquationSolver
 from FracG import FractionGUI
@@ -84,7 +84,7 @@ class Calculator:
     def open_laplace_view(self):
         """Opens a laplace window"""
         laplace_window = tk.Toplevel(self.master)
-        laplace_app = LaplaceTrsG(laplace_window)
+        laplace_app = LaplaceTransforms(laplace_window)
 
     def open_fraction_solver(self):
         """Opens fraction window"""
@@ -195,7 +195,7 @@ class Advance_calculator(Calculator):
 
     def open_laplace_view(self):
         laplace_window = tk.Toplevel(self.master)
-        laplace_app = LaplaceTrsG(laplace_window) 
+        laplace_app = LaplaceTransforms(laplace_window) 
 
     def clear_matrix_entries(self):
         if hasattr(self, "matrix_operations_app"):
