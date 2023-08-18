@@ -40,10 +40,15 @@ class DifferentialEquationSolver:
         variable = sp.symbols(variable_symbol)
         equation = self.equation_entry.get()
 
-        diff_eq = DifferentialEqs(order, variable, equation)
+        diff_eq = DifferentialEqs(order, variable_symbol, equation)
         general_solution = diff_eq.general_solution()
 
         self.display_results(general_solution)
 
     def display_results(self, result):
         self.results_label.config(text=f"General Solution:\n{result}")
+
+root = tk.Tk()
+app = DifferentialEquationSolver(root)
+
+root.mainloop()

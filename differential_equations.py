@@ -7,7 +7,7 @@ from scipy.integrate import odeint
 
 
 class DifferentialEqs:
-    def __init__(self, order, variable, equation):
+    def __init__(self, order, variable_symbol, equation):
         """Initializing components of DiffEq
 
         Args:
@@ -17,7 +17,7 @@ class DifferentialEqs:
         """
         self.order = order
         #store the order of the equation(s)
-        self.variable = variable
+        self.variable = sp.Function(variable_symbol)
         #stores the variable symbol
         self.equation = sp.sympify(equation) 
         #converts the equation to a string
@@ -46,7 +46,7 @@ class DifferentialEqs:
         Returns:
             Eq: the general solution of the ODE.
             """
-        solution = sp.dsolve(self.equation, self.variable)
+        solution = sp.dsolve(self.equation, self.variable(self.variable))
         #use the dsolve to find the solution
         return solution        
     
