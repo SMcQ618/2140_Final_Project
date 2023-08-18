@@ -21,12 +21,12 @@ class DifferentialEqs:
         if not self.is_linear:
             raise ValueError("Initial condition solving is currently supported only for linear ODEs.")
 
-        initial_conditions_f = {
-            self.function: initial_conditions[self.function],
-            self.function.diff(): initial_conditions[self.function.diff()]}
+        # initial_conditions_f = {
+        #     self.function: initial_conditions[self.function],
+        #     self.function.diff(): initial_conditions[self.function.diff()]}
         
-        constants = sp.solve([self.solution.rhs.subs(initial_conditions_f),
-                              self.solution.lhs.subs(initial_conditions_f)])
+        constants = sp.solve([self.solution.rhs.subs(initial_conditions),
+                              self.solution.lhs.subs(initial_conditions)])
         particular_solution = self.solution.subs(constants)
         return particular_solution
 
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     
     print("Is linear:", diff_eq_solver.is_linear)
     
-    initial_condition = {f.subs(x, 0): 1, f.diff().subs(x, 0): 0}# Adjust initial conditions
+    initial_condition = {f: sp.Function('f')(0), f.diff(): 1}  # Adjust initial conditions
     particular_solution = diff_eq_solver.solve_initial_condition(initial_condition)
     print("Particular solution with initial conditions:", particular_solution)
