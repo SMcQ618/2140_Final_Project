@@ -1,5 +1,6 @@
 import tkinter as tk
 from fractions import Fraction
+#uses the fraction library
 
 class FractionGUI:
     def __init__(self, root):
