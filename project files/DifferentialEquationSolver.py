@@ -1,8 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
 import sympy as sp
-#from sympy import symbols, Function, Eq, Derivative, dsolve, pprint
 #from sympy.parsing.sympy_parser import (parse_expr, standard_transformations, implicit_multiplication_application)
 from Differential_Equations1 import solve_ode, is_linear
 
@@ -33,8 +31,12 @@ class DifferentialEquationSolver:
         self.solve_button = tk.Button(root, text='Solve', command = self.solve_equation)
         self.solve_button.pack()
 
-    def solve_differential_eq(self):
-        """_summary_Solves the diff eq based on the user input"""
+    def parse_equation(self, equation, variable):
+        equation = equation.replace('=', '-(') + ')'
+        return equation
+    
+    def solve_equation(self):
+        """Solves the diff eq based on the user input"""
         try:
             order = int(self.order_entry.get())
             variable = self.variable_entry.get()
@@ -42,7 +44,9 @@ class DifferentialEquationSolver:
 
             t = sp.symbols('t')
             y = sp.Function(variable)(t)
-            eq = sp.Eq(sp.parse_expr(equation), 0)
+
+            parsed_equation = self.parse_equation(equation, variable)
+            eq = sp.sympify(parsed_equation) #sp.Eq( 
 
             if is_linear(eq, variable):
                 solutions = solve_ode(eq, variable, order)
@@ -53,20 +57,7 @@ class DifferentialEquationSolver:
         except Exception as e:
             messagebox.showerror('Error', str(e))
 
-def main():
+if __name__ == "__main__":
     root = tk.Tk()
     app = DifferentialEquationSolver(root)
     root.mainloop()
-
-if __name__ == '__name__':
-    main()
-    
-
-# def display_results(self, order, result):
-#       """DIsplays the result for the dff eq solver
-
-#       Args:
-#           order (int): The order of the diff eq
-#           result (str): the result of the gen solution
-#        """
-#       self.results_label.config(text=f"Order: {order} \nGeneral Solution:\n{result}")
