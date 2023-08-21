@@ -1,11 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 import math
-#from matriX import MatriX
 from Matrix_operations import Matrix_Operations
 from LaplaceT import LaplaceTransforms
 from EquationSolver import EquationSolver
-from DifferentialEquationSolver import DifferentialEquationSolver
+from DifferentialEquationSolver import DifferentialEquations 
 from FracG import FractionGUI
 
 
@@ -177,10 +176,9 @@ class Advance_calculator(Calculator):
         equation_solver_app = EquationSolver(equation_solver_window)
 
     def open_diff_eq_solver(self):
-        """where the diiferential eqution window is called
-        """
+        """Opens teh differential equation window"""
         diff_eq_window = tk.Toplevel(self.master)
-        diff_eq_app = DifferentialEquationSolver(diff_eq_window)
+        diff_eq_app = DifferentialEquations(diff_eq_window)
 
     def open_matrix_view(self):
         """Opens the matrix window"""
@@ -383,7 +381,7 @@ def main():
     view_menu.add_command(label="Matrix Calculator", command=app.open_matrix_view) #for the matrix
     view_menu.add_command(label="Laplace", command=app.open_laplace_view) #for the laplace
     view_menu.add_command(label="Lin_Alg Solver", command=app.open_equation_solver)  # linear
-    view_menu.add_command(label="DifferentialEQ", command=app.open_diff_eq_solver)
+    view_menu.add_command(label="Differential Equation Solver", command=app.open_diff_eq_solver)
     menubar.add_cascade(label="View", menu=view_menu)
 
     root.mainloop()
