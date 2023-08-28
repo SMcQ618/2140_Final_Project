@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from linear_equations import Linear_Eqs, SystemOfEQs
+import numpy as np
 class EquationSolver:
     def __init__(self, master):
         self.master = master
@@ -44,8 +45,15 @@ class EquationSolver:
             system.add_equation(equation)
 
         try:
-            solutions = system.solve_system()
-            solution_str = "\n".join(f"x{i+1} = {solution}" for i, solution in enumerate(solutions))
-            messagebox.showinfo("Solution", f"Solutions:\n{solution_str}")
+            coefficient_matrix = np.array([equation.coefficients for equation in system.equations])
+            constant_matrix = np.array([equation.constant for equation in system.equations])
+
+            solutions = np.linalg.lstsq(coefficient_matrix, constant_matrix, rcond=None)[0]
+
+            solution_list = []
+            for i, solution in enumerate(solutions):
+                solution_list.append(f"{solution:.3f}")
+            
+            messagebox.showinfo("Solution", f"Solutions:\n{solution_list}")
         except ValueError as e:
             messagebox.showerror("Error", str(e))

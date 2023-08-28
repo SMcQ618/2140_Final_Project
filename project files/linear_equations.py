@@ -105,3 +105,4 @@ def solve_linear_eq_example():
         print("Solutions:", formated_solutions)
     except ValueError as e:
         print(e)
+#solve_linear_eq_example()
