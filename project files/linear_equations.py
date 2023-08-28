@@ -1,4 +1,4 @@
-#topics will inclide: slving a linear equation, matrix from the module i created, Systems of Equations and Matrices ch4, cofactors expansion, Eigenvalues and Eigenvectors,  
+#topics will inclide: solving a linear equation, matrix from the module i created, Systems of Equations and Matrices ch4, cofactors expansion, Eigenvalues and Eigenvectors,  
 import numpy as np
 import numpy.linalg
 
@@ -96,7 +96,12 @@ system.add_equation(eq1)
 system.add_equation(eq2)
 
 try:
-    solutions = system.solve_system()
+    coefficient_matrix = np.array([equation.coefficients for equation in system.equations])
+    constant_matrix = np.array([equation.constant for equation in system.equations])
+
+    solutions = np.linalg.lstsq(coefficient_matrix, constant_matrix, rcond=None)[0]
     print("Solutions:", solutions)
+    #solutions = system.solve_system()
+    #print("Solutions:", solutions)
 except ValueError as e:
     print(e)
