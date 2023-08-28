@@ -88,20 +88,20 @@ class SystemOfEQs:
         return solutions
 
 # Example usage
-eq1 = Linear_Eqs([2, -3, 1], 4)
-eq2 = Linear_Eqs([1, 2, -1], -1)
+def solve_linear_eq_example():
+    eq1 = Linear_Eqs([2, -3, 1], 4)
+    eq2 = Linear_Eqs([1, 2, -1], -1)
 
-system = SystemOfEQs()
-system.add_equation(eq1)
-system.add_equation(eq2)
+    system = SystemOfEQs()
+    system.add_equation(eq1)
+    system.add_equation(eq2)
 
-try:
-    coefficient_matrix = np.array([equation.coefficients for equation in system.equations])
-    constant_matrix = np.array([equation.constant for equation in system.equations])
+    try:
+        coefficient_matrix = np.array([equation.coefficients for equation in system.equations])
+        constant_matrix = np.array([equation.constant for equation in system.equations])
 
-    solutions = np.linalg.lstsq(coefficient_matrix, constant_matrix, rcond=None)[0]
-    print("Solutions:", solutions)
-    #solutions = system.solve_system()
-    #print("Solutions:", solutions)
-except ValueError as e:
-    print(e)
+        solutions = np.linalg.lstsq(coefficient_matrix, constant_matrix, rcond=None)[0]
+        formated_solutions = [f"{sol:.3f}" for sol in solutions]
+        print("Solutions:", formated_solutions)
+    except ValueError as e:
+        print(e)
